@@ -1,6 +1,6 @@
 # Schema Audit
 
-Cada municipio tiene un schema de auditoria dedicado con nomenclatura `{schema_name}_audit` (ejemplo: `200_muni_audit`). Registra automaticamente cambios en 6 tablas criticas mediante triggers.
+Cada organizacion tiene un schema de auditoria dedicado con nomenclatura `{schema_name}_audit` (ejemplo: `200_muni_audit`). Registra automaticamente cambios en 6 tablas criticas mediante triggers.
 
 ## Arquitectura
 

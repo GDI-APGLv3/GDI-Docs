@@ -61,7 +61,7 @@ async def start_document_signing_process(
 
 1. Verificar que el documento existe y esta en estado editable (`draft` o `rejected`)
 2. Verificar que `user_id == created_by`
-3. Obtener logo del municipio desde `settings`
+3. Obtener logo de la organizacion desde `settings`
 4. Si es NOTA: validar que tenga recipients configurados
 5. Obtener lista de firmantes
 6. Generar PDF con PDFComposer (async)
@@ -96,7 +96,7 @@ async def sign_document(
 
 1. Verificar que el usuario es firmante y no ha firmado
 2. Descargar PDF desde R2 bucket `tosign`
-3. Obtener datos del firmante (nombre, sello, departamento, municipalidad)
+3. Obtener datos del firmante (nombre, sello, departamento, organizacion)
 4. Firmar con Notary API (`official_number=""`, `city=""`)
 5. Sobrescribir PDF en R2 `tosign`
 6. Actualizar `document_signers.status = 'signed'`

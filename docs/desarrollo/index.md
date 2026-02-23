@@ -71,7 +71,7 @@ hide:
 
     ---
 
-    Desarrollo local, crear endpoints, nuevos tipos de documento, nuevos municipios y troubleshooting.
+    Desarrollo local, crear endpoints, nuevos tipos de documento, nuevas organizaciones y troubleshooting.
 
     [:octicons-arrow-right-24: Ver guias](guias/desarrollo-local.md)
 

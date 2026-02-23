@@ -1,6 +1,6 @@
 # Vision General de la Arquitectura
 
-GDI Latam es un **Sistema de Gestion Documental Inteligente** para gobiernos y municipalidades de America Latina. La plataforma permite crear, firmar, numerar y gestionar documentos oficiales y expedientes administrativos de forma digital.
+GDI Latam es un **Sistema de Gestion Documental Inteligente** para gobiernos y organizaciones de America Latina. La plataforma permite crear, firmar, numerar y gestionar documentos oficiales y expedientes administrativos de forma digital.
 
 ## Tabla de Servicios
 
@@ -30,7 +30,7 @@ Cada capa del sistema tiene una responsabilidad clara e inviolable:
 
 ### Multi-tenant por schema
 
-Cada municipio opera en su propio schema de PostgreSQL. Esto garantiza aislamiento total de datos entre organizaciones sin necesidad de bases de datos separadas.
+Cada organizacion opera en su propio schema de PostgreSQL. Esto garantiza aislamiento total de datos entre organizaciones sin necesidad de bases de datos separadas.
 
 ```
 PostgreSQL

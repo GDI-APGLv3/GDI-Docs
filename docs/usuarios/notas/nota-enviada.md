@@ -23,7 +23,7 @@ El area central muestra el documento PDF generado con los siguientes elementos:
 
 | Elemento | Descripcion |
 |----------|-------------|
-| **Membrete** | Encabezado oficial con el tipo "NOTA - Nota" y datos del municipio |
+| **Membrete** | Encabezado oficial con el tipo "NOTA - Nota" y datos de la organizacion |
 | **Lugar y fecha** | Localidad y fecha de emision (ej: *LATAM, 18 de febrero de 2026*) |
 | **Numero oficial** | Identificador unico de la nota (ej: `NOTA-2026-00000105-TXST-HAC`) |
 | **Referencia** | Titulo descriptivo de la nota (ej: *Informe ejecucion presupuestaria trimestral*) |

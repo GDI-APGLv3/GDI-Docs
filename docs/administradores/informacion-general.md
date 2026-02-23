@@ -1,6 +1,6 @@
 # Informacion General
 
-Configura los datos basicos que identifican oficialmente a tu municipio dentro del sistema.
+Configura los datos basicos que identifican oficialmente a tu organizacion dentro del sistema.
 
 ![Informacion General](capturas/informacion-general.png)
 
@@ -8,11 +8,11 @@ Configura los datos basicos que identifican oficialmente a tu municipio dentro d
 
 ## Informacion Institucional
 
-Datos principales del municipio.
+Datos principales de la organizacion.
 
 | Campo | Descripcion |
 |-------|-------------|
-| **Nombre** | Nombre completo del municipio (ej: *Municipalidad del Futuro*) |
+| **Nombre** | Nombre completo de la organizacion (ej: *Municipalidad del Futuro*) |
 | **Acronimo** | Sigla corta que identifica al tenant (ej: *TXST*). Se usa en la numeracion de documentos y expedientes |
 | **Ciudad de Firma** | Ciudad que aparece en los sellos de firma digital (ej: *LATAM*) |
 
@@ -20,12 +20,12 @@ Datos principales del municipio.
 
 ## Identidad Visual
 
-Personalizacion grafica del municipio.
+Personalizacion grafica de la organizacion.
 
 | Elemento | Descripcion | Especificaciones |
 |----------|-------------|------------------|
-| **Logo Institucional** | Imagen principal del municipio. Aparece en el sidebar y en los PDFs generados | PNG, JPG o WebP. Max 500x150px |
-| **Color Institucional** | Color primario del municipio. Se aplica en la interfaz del BackOffice | Selector de color con valor Hex y RGBA |
+| **Logo Institucional** | Imagen principal de la organizacion. Aparece en el sidebar y en los PDFs generados | PNG, JPG o WebP. Max 500x150px |
+| **Color Institucional** | Color primario de la organizacion. Se aplica en la interfaz del BackOffice | Selector de color con valor Hex y RGBA |
 | **Isologo Institucional** | Version compacta del logo para espacios reducidos | PNG, JPG o WebP. Max 500x150px |
 
 ---

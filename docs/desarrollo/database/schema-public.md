@@ -1,6 +1,6 @@
 # Schema Public
 
-El schema `public` contiene **9 tablas globales** compartidas por todos los municipios, mas tablas automaticas creadas por GDI-AgenteLANG.
+El schema `public` contiene **9 tablas globales** compartidas por todas las organizaciones, mas tablas automaticas creadas por GDI-AgenteLANG.
 
 ## Diagrama ER
 
@@ -105,7 +105,7 @@ erDiagram
 
 ## TABLA 1: roles
 
-Roles globales del sistema. Compartidos por todos los municipios.
+Roles globales del sistema. Compartidos por todas las organizaciones.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -128,7 +128,7 @@ Roles globales del sistema. Compartidos por todos los municipios.
 
 ## TABLA 2: global_document_types
 
-Catalogo maestro de tipos de documento. Cada municipio copia los que necesita a su tabla local `document_types`.
+Catalogo maestro de tipos de documento. Cada organizacion copia los que necesita a su tabla local `document_types`.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -164,7 +164,7 @@ Catalogo maestro de tipos de documento. Cada municipio copia los que necesita a 
 
 ## TABLA 3: global_case_templates
 
-Catalogo maestro de plantillas de expediente. Cada municipio copia las que necesita.
+Catalogo maestro de plantillas de expediente. Cada organizacion copia las que necesita.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -194,12 +194,12 @@ Catalogo maestro de plantillas de expediente. Cada municipio copia las que neces
 
 ## TABLA 4: municipalities
 
-Registro de municipios activos. Cada fila representa un tenant con su propio schema.
+Registro de organizaciones activas. Cada fila representa un tenant con su propio schema.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
 | `id` | UUID | NO | `gen_random_uuid()` | Identificador unico |
-| `name` | TEXT | NO | - | Nombre completo del municipio |
+| `name` | TEXT | NO | - | Nombre completo de la organizacion |
 | `acronym` | VARCHAR(4) | NO | - | Acronimo auto-generado (WXYZ) |
 | `country` | `country_enum` | NO | - | Codigo de pais (AR, BR, UY...) |
 | `primary_color` | VARCHAR(6) | NO | `'16158C'` | Color hex sin # |
@@ -212,7 +212,7 @@ Registro de municipios activos. Cada fila representa un tenant con su propio sch
 **Constraints:** PK `id`, UNIQUE `acronym`, UNIQUE `schema_number`, UNIQUE `schema_name`
 
 !!! note "Convencion de nombres"
-    El `schema_name` sigue el formato `{schema_number}_{acronym_lower}`, por ejemplo: `200_muni`, `201_otra`. El acronimo se genera automaticamente con WXYZ y puede cambiar cuando el municipio formaliza el contrato.
+    El `schema_name` sigue el formato `{schema_number}_{acronym_lower}`, por ejemplo: `200_muni`, `201_otra`. El acronimo se genera automaticamente con WXYZ y puede cambiar cuando la organizacion formaliza el contrato.
 
 ---
 
@@ -245,14 +245,14 @@ Estados de visualizacion para el frontend. Mapeo de estados internos a nombres a
 
 ## TABLA 6: user_registry
 
-Mapeo multi-tenant: asocia un email a los schemas donde tiene acceso. Un usuario puede pertenecer a multiples municipios.
+Mapeo multi-tenant: asocia un email a los schemas donde tiene acceso. Un usuario puede pertenecer a multiples organizaciones.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
 | `id` | UUID | NO | `gen_random_uuid()` | Identificador unico |
 | `email` | TEXT | NO | - | Email del usuario |
-| `schema_name` | TEXT | NO | - | Schema del municipio |
-| `is_default` | BOOLEAN | NO | `false` | Municipio por defecto |
+| `schema_name` | TEXT | NO | - | Schema de la organizacion |
+| `is_default` | BOOLEAN | NO | `false` | Organizacion por defecto |
 | `created_at` | TIMESTAMPTZ | NO | `NOW()` | Fecha de creacion |
 
 **Constraints:** PK `id`, UNIQUE (`email`, `schema_name`)
@@ -260,13 +260,13 @@ Mapeo multi-tenant: asocia un email a los schemas donde tiene acceso. Un usuario
 **Indices:** `idx_user_registry_email` en `email`
 
 !!! info "Sincronizacion automatica"
-    Esta tabla se mantiene sincronizada automaticamente via trigger `fn_sync_user_registry` en cada schema de municipio. Cuando se crea, actualiza o elimina un usuario en `{schema}.users`, el trigger refleja el cambio en `public.user_registry`.
+    Esta tabla se mantiene sincronizada automaticamente via trigger `fn_sync_user_registry` en cada schema de organizacion. Cuando se crea, actualiza o elimina un usuario en `{schema}.users`, el trigger refleja el cambio en `public.user_registry`.
 
 ---
 
 ## TABLA 7: api_keys
 
-API Keys para acceso REST a GDI-MCP Server. Cada municipio puede tener multiples API Keys.
+API Keys para acceso REST a GDI-MCP Server. Cada organizacion puede tener multiples API Keys.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -314,7 +314,7 @@ Asocia usuarios a API Keys para trazabilidad. El cliente REST debe enviar `X-Use
 
 ## TABLA 9: global_registry_families
 
-Familias de registros globales con esquema de datos y estados por defecto. Cada municipio puede copiar y personalizar estas familias.
+Familias de registros globales con esquema de datos y estados por defecto. Cada organizacion puede copiar y personalizar estas familias.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|

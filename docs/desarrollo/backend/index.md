@@ -50,7 +50,7 @@ Cliente (Frontend/MCP)
 
 - **Endpoints thin**: Solo validacion y delegacion a services
 - **Services con logica**: Toda la logica de negocio en la capa de servicios
-- **Multi-tenant**: Cada municipalidad tiene su propio schema en PostgreSQL
+- **Multi-tenant**: Cada organizacion tiene su propio schema en PostgreSQL
 - **keyword-only `schema_name`**: Patron obligatorio en todas las funciones de BD
 - **Auth0 JWT**: Autenticacion via tokens RS256
 - **Async-first**: Endpoints async con `async def`

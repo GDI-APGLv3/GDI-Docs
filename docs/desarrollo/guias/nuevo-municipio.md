@@ -1,10 +1,10 @@
-# Onboarding de un Nuevo Municipio
+# Onboarding de una Nueva Organizacion
 
-Guia paso a paso para incorporar un nuevo municipio al sistema GDI Latam.
+Guia paso a paso para incorporar una nueva organizacion al sistema GDI Latam.
 
 ## Concepto Multi-Tenant
 
-GDI usa una arquitectura **schema-per-tenant** en PostgreSQL. Cada municipio tiene su propio schema de base de datos con 33 tablas, completamente aislado de los demas municipios. Las tablas globales (tipos de documento, roles, etc.) se comparten en el schema `public`.
+GDI usa una arquitectura **schema-per-tenant** en PostgreSQL. Cada organizacion tiene su propio schema de base de datos con 33 tablas, completamente aislado de las demas organizaciones. Las tablas globales (tipos de documento, roles, etc.) se comparten en el schema `public`.
 
 Ver [Arquitectura Multi-Tenant](../arquitectura/multi-tenant.md) para el detalle tecnico.
 
@@ -30,7 +30,7 @@ python tools/create_municipio.py
 
 El script pregunta interactivamente:
 
-1. Nombre del municipio
+1. Nombre de la organizacion
 2. Acronimo
 3. Pais
 4. Numero de schema
@@ -47,7 +47,7 @@ El archivo `03-create-municipio.sql` tiene 9 placeholders que deben reemplazarse
 | Placeholder | Descripcion | Ejemplo |
 |-------------|-------------|---------|
 | `{SCHEMA_NAME}` | Nombre completo del schema | `200_salta` |
-| `{MUNICIPALITY_NAME}` | Nombre del municipio | `Municipalidad de Salta` |
+| `{MUNICIPALITY_NAME}` | Nombre de la organizacion | `Municipalidad de Salta` |
 | `{ACRONYM}` | Acronimo | `SALTA` |
 | `{COUNTRY}` | Pais | `Argentina` |
 | `{SCHEMA_NUMBER}` | Numero del schema | `200` |
@@ -77,7 +77,7 @@ El script `03-create-municipio.sql` ejecuta todo en secuencia:
 1. **Schema principal** (`200_salta`): 33 tablas con indices y trigger de sync
 2. **Schema de auditoria** (`200_salta_audit`): tabla `audit_log` + funcion + 6 triggers
 3. **Registro en public**: INSERT en `public.municipalities`
-4. **Datos iniciales**: departamento ROOT, settings del municipio, estados de usuario
+4. **Datos iniciales**: departamento ROOT, settings de la organizacion, estados de usuario
 
 ```
 03-create-municipio.sql
@@ -96,7 +96,7 @@ Ver [Scripts de Deploy](../database/scripts-deploy.md) para el detalle completo 
 
 ## Paso 2: Crear Buckets en Cloudflare R2
 
-Cada municipio necesita dos buckets en Cloudflare R2:
+Cada organizacion necesita dos buckets en Cloudflare R2:
 
 ```
 tenant-{nombre}-oficial   # PDFs firmados (documentos oficiales)
@@ -125,13 +125,13 @@ Ver [Cloudflare R2](../deploy/cloudflare-r2.md) para mas detalles.
 
 ### Crear usuarios iniciales
 
-Cada municipio necesita al menos un usuario administrador en Auth0:
+Cada organizacion necesita al menos un usuario administrador en Auth0:
 
 1. Ir a Auth0 Dashboard > User Management > Users
 2. Crear usuario con email y password
 3. Asegurar que el usuario tiene la conexion de base de datos correcta
 
-### Mapeo usuario-municipio
+### Mapeo usuario-organizacion
 
 El sistema usa `public.user_registry` para mapear emails a schemas:
 
@@ -153,13 +153,13 @@ El BackOffice (`GDI-BackOffice-Front`) permite configurar la estructura organiza
 
 1. **Departamentos**: Crear la estructura jerarquica (Intendencia > Secretarias > Direcciones)
 2. **Sectores**: Crear sectores dentro de cada departamento (PRIV, MESA, ADMIN)
-3. **Rangos**: Definir rangos del municipio (Intendente, Secretario, Director)
+3. **Rangos**: Definir rangos de la organizacion (Intendente, Secretario, Director)
 4. **Sellos**: Crear sellos de firma (asociados a rangos)
 5. **Usuarios**: Asignar usuarios a sectores con sus roles y sellos
 
 ### Via SQL directo
 
-Para municipios con estructura predefinida, ejecutar SQL:
+Para organizaciones con estructura predefinida, ejecutar SQL:
 
 ```sql
 -- Crear departamentos
@@ -271,7 +271,7 @@ curl -X POST http://localhost:8000/documents \
 
 - [ ] Schema creado en BD (`{numero}_{nombre}`)
 - [ ] Schema de auditoria creado (`{numero}_{nombre}_audit`)
-- [ ] Municipio registrado en `public.municipalities`
+- [ ] Organizacion registrada en `public.municipalities`
 - [ ] Buckets R2 creados (oficial + tosign)
 - [ ] Settings configurados (city, color, buckets)
 - [ ] Al menos un usuario creado en Auth0

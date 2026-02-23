@@ -17,7 +17,7 @@ Esta documentacion describe como utilizar cada pantalla de la aplicacion, que ca
 
     ---
 
-    Listas maestras del sistema: tipos de documento y tipos de expediente disponibles para cada municipio.
+    Listas maestras del sistema: tipos de documento y tipos de expediente disponibles para cada organizacion.
 
     [:octicons-arrow-right-24: Ver seccion](catalogos/index.md)
 

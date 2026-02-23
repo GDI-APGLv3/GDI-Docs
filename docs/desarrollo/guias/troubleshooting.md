@@ -170,7 +170,7 @@ Ver [Gotenberg](../pdfcomposer/gotenberg.md) y [Railway](../deploy/railway.md#in
 
 1. Credenciales R2 incorrectas
 2. Bucket no existe
-3. El nombre del bucket no coincide con `settings` del municipio
+3. El nombre del bucket no coincide con `settings` de la organizacion
 
 **Diagnostico**:
 

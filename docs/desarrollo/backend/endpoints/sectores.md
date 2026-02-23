@@ -30,7 +30,7 @@ Lista todos los sectores con sus departamentos asociados.
 
 **Uso principal:**
 
-- Organigrama del municipio
+- Organigrama de la organizacion
 - Selector de sectores para transferencias
 - Filtros en listas de expedientes
 - Asignacion de usuarios a sectores

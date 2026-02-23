@@ -17,7 +17,7 @@ EE-{ANO}-{SECUENCIAL}-{TENANT}-{DEPARTAMENTO}
 | EE | `EE` | Prefijo fijo que identifica un expediente electronico |
 | ANO | `2026` | Ano de creacion |
 | SECUENCIAL | `000019` | Numero secuencial (6 digitos, unico por tenant) |
-| TENANT | `TXST` | Codigo del municipio/tenant |
+| TENANT | `TXST` | Codigo de la organizacion/tenant |
 | DEPARTAMENTO | `INTE` | Acronimo del departamento iniciador |
 
 Ejemplo completo: `EE-2026-000019-TXST-INTE`

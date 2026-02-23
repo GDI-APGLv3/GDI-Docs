@@ -179,7 +179,7 @@ El header `WWW-Authenticate` con `resource_metadata` es la clave para que client
 |-------|-------|----------|
 | "Authorization required" | No hay token OAuth | Usar cliente MCP con OAuth |
 | "Token invalido" | JWT expirado o mal formado | Re-autenticar via OAuth |
-| "multi_tenant_selection_required" | Usuario con multiples municipalidades | Especificar `tenant_id` |
+| "multi_tenant_selection_required" | Usuario con multiples organizaciones | Especificar `tenant_id` |
 | "Audience no valido" | Token con audience incorrecto | Verificar audience en Auth0 |
-| "Usuario no encontrado" | Email no existe en BD | Crear usuario en municipalidad |
+| "Usuario no encontrado" | Email no existe en BD | Crear usuario en la organizacion |
 | Discovery no funciona | Endpoint no accesible | Verificar CORS y rutas en http_server.py |

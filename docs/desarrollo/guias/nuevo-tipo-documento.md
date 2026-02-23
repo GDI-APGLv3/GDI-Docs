@@ -6,10 +6,10 @@ Guia paso a paso para agregar un nuevo tipo de documento al sistema GDI. Un tipo
 
 El sistema de tipos de documento tiene dos niveles:
 
-1. **Global** (`public.global_document_types`): Catalogo maestro con 61 tipos definidos. Compartido entre todos los municipios.
-2. **Per-tenant** (`{schema}.document_types`): Tipos habilitados para cada municipio, referenciando al catalogo global.
+1. **Global** (`public.global_document_types`): Catalogo maestro con 61 tipos definidos. Compartido entre todas las organizaciones.
+2. **Per-tenant** (`{schema}.document_types`): Tipos habilitados para cada organizacion, referenciando al catalogo global.
 
-Cada municipio puede habilitar un subconjunto de los tipos globales y definir que rangos/sectores pueden usarlos.
+Cada organizacion puede habilitar un subconjunto de los tipos globales y definir que rangos/sectores pueden usarlos.
 
 Ver [Schema Public](../database/schema-public.md) y [Schema Municipio](../database/schema-municipio.md) para el detalle de las tablas.
 
@@ -47,11 +47,11 @@ INSERT INTO public.global_document_types (id, acronym, name, type, is_active)
 VALUES (62, 'MITIPO', 'Mi Tipo de Documento', 'HTML', true);
 ```
 
-## Paso 2: Habilitar en Municipio (SQL)
+## Paso 2: Habilitar en Organizacion (SQL)
 
-Cada municipio tiene su propia tabla `document_types` que referencia al catalogo global. Al habilitar un tipo, se define que rangos pueden crear documentos de ese tipo.
+Cada organizacion tiene su propia tabla `document_types` que referencia al catalogo global. Al habilitar un tipo, se define que rangos pueden crear documentos de ese tipo.
 
-### Agregar a `document_types` del municipio
+### Agregar a `document_types` de la organizacion
 
 ```sql
 -- Habilitar el tipo en el municipio 200_muni
@@ -112,7 +112,7 @@ VALUES
     ('MITIPO', 'Mi Tipo de Documento', 'HTML', 62, true);
 ```
 
-Y tambien en el template de nuevos municipios `03-create-municipio.sql` si debe estar disponible por defecto.
+Y tambien en el template de nuevas organizaciones `03-create-municipio.sql` si debe estar disponible por defecto.
 
 ## Paso 3: Backend - Schemas y Validaciones
 
@@ -120,7 +120,7 @@ El Backend ya carga los tipos de documento de la BD dinamicamente. No necesitas 
 
 ### Verificar carga del tipo
 
-El endpoint `GET /document-types` retorna todos los tipos activos del municipio:
+El endpoint `GET /document-types` retorna todos los tipos activos de la organizacion:
 
 ```bash
 curl http://localhost:8000/document-types \
@@ -249,14 +249,14 @@ El BackOffice permite a administradores gestionar los tipos de documento habilit
 
 Para agregar configuraciones especificas:
 
-1. **Habilitar/deshabilitar tipo**: La tabla `document_types` del municipio con `is_active`
+1. **Habilitar/deshabilitar tipo**: La tabla `document_types` de la organizacion con `is_active`
 2. **Permisos por rango**: La tabla `document_types_allowed_by_rank`
 3. **Restriccion por sector**: La tabla `enabled_document_types_by_sector`
 
 ## Checklist
 
 - [ ] Tipo agregado a `public.global_document_types` (SQL)
-- [ ] Tipo habilitado en `{schema}.document_types` del municipio
+- [ ] Tipo habilitado en `{schema}.document_types` de la organizacion
 - [ ] Permisos por rango configurados en `document_types_allowed_by_rank`
 - [ ] Seeds actualizados (`02-seed-global.sql`, `04-seed-demo.sql`)
 - [ ] Template `03-create-municipio.sql` actualizado (si el tipo va por defecto)

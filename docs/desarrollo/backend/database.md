@@ -202,7 +202,7 @@ def get_next_case_sequence(year: int = None, *, schema_name: str) -> int:
 
 Usa **Advisory Lock** (`pg_advisory_xact_lock(999999)`) para serializar acceso y evitar race conditions en la numeracion de expedientes.
 
-Formato de numero: `EE-{año}-{secuencia:06d}-{municipio}-{departamento}`
+Formato de numero: `EE-{año}-{secuencia:06d}-{organizacion}-{departamento}`
 
 ## Contexto de Auditoria
 

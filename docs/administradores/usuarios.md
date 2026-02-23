@@ -8,7 +8,7 @@ Administra los usuarios del sistema: crear, editar, asignar sectores, roles, sel
 
 ## Listado de Usuarios
 
-La tabla muestra todos los usuarios del municipio con paginacion.
+La tabla muestra todos los usuarios de la organizacion con paginacion.
 
 | Columna | Descripcion |
 |---------|-------------|

@@ -13,7 +13,7 @@ El sistema genera numeros oficiales unicos para todos los documentos del sistema
 | TIPO | `IF`, `CAEX`, `PV` | Acronimo del tipo de documento |
 | ANIO | `2026` | Anio actual |
 | SECUENCIA | `00000001` | Secuencia global (8 digitos, zero-padded) |
-| MUNICIPIO | `TXST` | Acronimo del municipio (de `public.municipalities`) |
+| MUNICIPIO | `TXST` | Acronimo de la organizacion (de `public.municipalities`) |
 | DEPARTAMENTO | `INTE` | Acronimo del departamento del numerador |
 
 **Ejemplos:**
@@ -31,7 +31,7 @@ RESOL-2026-00000005-TXST-HAC     -- Resolucion
 La secuencia es **global por anio**: todos los tipos de documentos comparten la misma secuencia. Esto garantiza:
 
 - No hay numeros duplicados entre tipos de documento
-- Orden cronologico unico entre todos los documentos del municipio
+- Orden cronologico unico entre todos los documentos de la organizacion
 - Trazabilidad simple (el numero mas alto = ultimo documento numerado)
 
 La secuencia se resetea a 1 al cambiar de anio.

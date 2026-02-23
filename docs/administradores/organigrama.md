@@ -1,6 +1,6 @@
 # Organigrama
 
-Crea nuevos sectores y asigna usuarios a tus espacios de trabajo. El organigrama define la estructura organizativa del municipio: reparticiones (departamentos) y sectores.
+Crea nuevos sectores y asigna usuarios a tus espacios de trabajo. El organigrama define la estructura organizativa de la organizacion: reparticiones (departamentos) y sectores.
 
 ![Organigrama](capturas/organigrama.png)
 
@@ -8,7 +8,7 @@ Crea nuevos sectores y asigna usuarios a tus espacios de trabajo. El organigrama
 
 ## Panel de Reparticiones
 
-El arbol de la izquierda muestra todas las reparticiones del municipio con su jerarquia y colores identificatorios.
+El arbol de la izquierda muestra todas las reparticiones de la organizacion con su jerarquia y colores identificatorios.
 
 - Cada reparticion tiene un **color** asignado y puede contener **sub-reparticiones**
 - Al seleccionar una reparticion se muestra su detalle en el panel central

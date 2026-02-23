@@ -1,6 +1,6 @@
 # ENUMs y Tipos
 
-Todos los tipos enumerados se definen en el schema `public` y son compartidos por todos los municipios. Se crean en `01-install.sql`.
+Todos los tipos enumerados se definen en el schema `public` y son compartidos por todas las organizaciones. Se crean en `01-install.sql`.
 
 ## Resumen
 

@@ -22,7 +22,7 @@ psql "postgresql://USER:PASSWORD@HOST:PORT/DATABASE" -c "SET search_path TO '200
     - **Username**: `postgres`
     - **Password**: password de Railway
 3. En el panel izquierdo, expandir: Servers > railway > Databases > railway > Schemas
-4. Los schemas de municipio aparecen como `200_muni`, `201_otra`, etc.
+4. Los schemas de organizacion aparecen como `200_muni`, `201_otra`, etc.
 
 ### DBeaver
 
@@ -73,9 +73,9 @@ python install.py
 !!! danger "Operacion destructiva"
     `install.py` ejecuta `DROP SCHEMA IF EXISTS ... CASCADE` sobre `200_muni` y `200_muni_audit`. Todos los datos se pierden.
 
-### create_municipio.py - Crear municipio
+### create_municipio.py - Crear organizacion
 
-Script interactivo para crear un nuevo municipio en produccion.
+Script interactivo para crear una nueva organizacion en produccion.
 
 ```bash
 cd GDI-BD/tools
@@ -118,7 +118,7 @@ python create_municipio.py
   Confirmar creacion? (s/N): s
 ```
 
-Despues de crear el municipio, el script muestra los pasos manuales pendientes:
+Despues de crear la organizacion, el script muestra los pasos manuales pendientes:
 
 1. Crear buckets en Cloudflare R2
 2. Configurar permisos CORS
@@ -180,7 +180,7 @@ VERIFICACION DE SCHEMAS Y TABLAS
 
 ## Queries Utiles
 
-### Listar schemas de municipios
+### Listar schemas de organizaciones
 
 ```sql
 SELECT schema_name, name, acronym, country, is_active
@@ -199,7 +199,7 @@ GROUP BY table_schema
 ORDER BY table_schema;
 ```
 
-### Ver usuarios de un municipio
+### Ver usuarios de una organizacion
 
 ```sql
 SELECT u.id, u.email, u.full_name, s.acronym as sector,

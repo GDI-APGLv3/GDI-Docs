@@ -30,7 +30,7 @@ Server MCP (Model Context Protocol) con 14 tools de solo lectura. Compatible con
 | Tool | Descripcion |
 |------|-------------|
 | `get_document_types` | Tipos de documentos activos (INF, DICT, CAEX, etc.) |
-| `get_sectors` | Sectores y departamentos del municipio |
+| `get_sectors` | Sectores y departamentos de la organizacion |
 | `get_user_info` | Informacion del usuario actual |
 | `get_case_templates` | Templates de expedientes disponibles |
 
@@ -185,7 +185,7 @@ VALID_AUDIENCES = [
 
 ### Multi-Tenant Selection
 
-Si un usuario tiene acceso a multiples municipalidades:
+Si un usuario tiene acceso a multiples organizaciones:
 
 ```python
 # Error: "multi_tenant_selection_required"

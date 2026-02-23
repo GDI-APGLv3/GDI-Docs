@@ -1,6 +1,6 @@
 # Catalogos
 
-Los catalogos son las listas maestras del sistema. Cada municipio habilita su propia seleccion de tipos a partir de estos catalogos globales.
+Los catalogos son las listas maestras del sistema. Cada organizacion habilita su propia seleccion de tipos a partir de estos catalogos globales.
 
 ---
 

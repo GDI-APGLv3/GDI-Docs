@@ -1,6 +1,6 @@
 # Roles y Sellos
 
-Gestiona los rangos jerarquicos y sellos de firma del municipio. Los rangos determinan que tipos de documentos puede firmar cada funcionario. Los sellos definen la firma visual que aparece en los PDFs.
+Gestiona los rangos jerarquicos y sellos de firma de la organizacion. Los rangos determinan que tipos de documentos puede firmar cada funcionario. Los sellos definen la firma visual que aparece en los PDFs.
 
 ![Roles y Sellos](capturas/roles-y-sellos.png)
 
@@ -34,9 +34,9 @@ Cada usuario tiene un **sello propio** asignado en su perfil (seccion [Usuarios]
 
 ---
 
-## Sellos del Municipio
+## Sellos de la Organizacion
 
-Cada sello define un tipo de firma visual que se estampa en los documentos firmados. Son las "plantillas" de firma disponibles en el municipio.
+Cada sello define un tipo de firma visual que se estampa en los documentos firmados. Son las "plantillas" de firma disponibles en la organizacion.
 
 | Campo | Descripcion |
 |-------|-------------|
@@ -53,13 +53,13 @@ Cada sello define un tipo de firma visual que se estampa en los documentos firma
 |--------|-------------|
 | :material-pencil: **Editar** | Modificar nombre y descripcion del sello |
 | :material-delete: **Eliminar** | Eliminar el sello. Solo posible si **no** esta vinculado a un Rango |
-| **+ Agregar sello** | Crear un nuevo sello para el municipio |
+| **+ Agregar sello** | Crear un nuevo sello para la organizacion |
 
 ---
 
 ## Rangos Jerarquicos
 
-Los rangos definen la jerarquia del municipio. Cada rango tiene un sello de firma vinculado y un nivel que determina que tipo de documentos puede numerar.
+Los rangos definen la jerarquia de la organizacion. Cada rango tiene un sello de firma vinculado y un nivel que determina que tipo de documentos puede numerar.
 
 | Campo | Descripcion |
 |-------|-------------|

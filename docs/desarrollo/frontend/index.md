@@ -28,7 +28,7 @@ GDI-FRONTEND es la aplicacion web para usuarios finales del Sistema de Gestion D
 - **Dashboard**: Feed de actividad con movimientos de expedientes, estadisticas por sector
 - **Busqueda Unificada**: Buscar documentos y expedientes por numero oficial o texto libre
 - **Asistente IA**: Chat con agente inteligente por expediente o general (RAG)
-- **Multi-Tenant**: Soporte para multiples municipios con colores dinamicos por tenant
+- **Multi-Tenant**: Soporte para multiples organizaciones con colores dinamicos por tenant
 
 ## Comunicacion con Backend
 

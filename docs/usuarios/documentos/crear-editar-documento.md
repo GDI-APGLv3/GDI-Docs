@@ -18,7 +18,7 @@ Desde la seccion **Documentos**, hacer click en el boton **"+ Crear"** en la esq
 | **Obligatorio** | Si |
 | **Busqueda** | Se puede escribir para filtrar por nombre, sigla o descripcion |
 
-Se muestra la lista de tipos disponibles en formato `(SIGLA) Nombre -- Descripcion`. La lista de tipos habilitados depende de la configuracion del municipio. Los tipos se muestran en orden alfabetico.
+Se muestra la lista de tipos disponibles en formato `(SIGLA) Nombre -- Descripcion`. La lista de tipos habilitados depende de la configuracion de la organizacion. Los tipos se muestran en orden alfabetico.
 
 ![Dialogo de creacion - Referencia](../capturas/crear-documento-dialogo.png)
 
@@ -215,7 +215,7 @@ Guarda automaticamente y luego navega a la **vista previa del documento en forma
 
 La vista previa muestra:
 
-- El **PDF generado** con membrete oficial del municipio, referencia y contenido
+- El **PDF generado** con membrete oficial de la organizacion, referencia y contenido
 - Marca de agua **"PREVISUALIZACION"** en diagonal
 - Panel lateral con tipo de documento, firmantes y expedientes propuestos
 - Botones **"Volver"** (regresa al editor) y **"Comenzar proceso de firma"**
@@ -298,7 +298,7 @@ Al firmar exitosamente se muestra un dialogo de confirmacion con el **numero ofi
 Para ver la lista completa de tipos de documento disponibles en el sistema (HTML, Importados e Internos), consultar el [Catalogo de Tipos de Documento](../catalogos/tipos-de-documento.md).
 
 !!! info "Tipos habilitados"
-    Cada municipio define su propia lista de tipos habilitados a partir del catalogo global. La lista que ves en el selector depende de la configuracion de tu municipio.
+    Cada organizacion define su propia lista de tipos habilitados a partir del catalogo global. La lista que ves en el selector depende de la configuracion de tu organizacion.
 
 ---
 
@@ -315,7 +315,7 @@ Al firmar el numerador, se genera un numero unico con el siguiente formato:
 | SIGLA | `IF` | Acronimo del tipo de documento |
 | ANO | `2026` | Ano de creacion |
 | SECUENCIAL | `00000122` | Numero secuencial (8 digitos, unico por tenant) |
-| TENANT | `TXST` | Codigo del municipio/tenant |
+| TENANT | `TXST` | Codigo de la organizacion/tenant |
 | DEPARTAMENTO | `INTE` | Acronimo del departamento del numerador |
 
 Ejemplo completo: `IF-2026-00000122-TXST-INTE`

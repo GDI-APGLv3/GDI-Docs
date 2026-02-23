@@ -1,6 +1,6 @@
 # Schema Municipio
 
-Cada municipio tiene su propio schema PostgreSQL con **33 tablas** organizadas en 9 grupos funcionales. El nombre del schema sigue la convencion `{numero}_{acronimo}`, por ejemplo: `200_muni`, `201_otra`.
+Cada organizacion tiene su propio schema PostgreSQL con **33 tablas** organizadas en 9 grupos funcionales. El nombre del schema sigue la convencion `{numero}_{acronimo}`, por ejemplo: `200_muni`, `201_otra`.
 
 ## Resumen por Grupo
 
@@ -54,7 +54,7 @@ erDiagram
 
 ### TABLA 1: departments
 
-Departamentos del municipio. Soporta jerarquia via `parent_id` (self-referencing).
+Departamentos de la organizacion. Soporta jerarquia via `parent_id` (self-referencing).
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -95,7 +95,7 @@ Sectores dentro de cada departamento. Cada departamento tiene al menos un sector
 
 ### TABLA 3: users
 
-Usuarios del municipio. Cada usuario pertenece a un sector.
+Usuarios de la organizacion. Cada usuario pertenece a un sector.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -176,11 +176,11 @@ Tabla lookup para estados de usuario.
 ## Grupo C: Rangos y Sellos
 
 !!! note "Per-tenant"
-    Desde v4.0.0, rangos y sellos son per-tenant. Cada municipio define sus propias jerarquias y sellos.
+    Desde v4.0.0, rangos y sellos son per-tenant. Cada organizacion define sus propias jerarquias y sellos.
 
 ### TABLA 8: ranks
 
-Jerarquias del municipio. El campo `level` determina el orden (1 = mas alto).
+Jerarquias de la organizacion. El campo `level` determina el orden (1 = mas alto).
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -196,7 +196,7 @@ Jerarquias del municipio. El campo `level` determina el orden (1 = mas alto).
 
 ### TABLA 9: city_seals
 
-Sellos de firma del municipio. Pueden estar vinculados a un rango o ser genericos.
+Sellos de firma de la organizacion. Pueden estar vinculados a un rango o ser genericos.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -216,7 +216,7 @@ Sellos de firma del municipio. Pueden estar vinculados a un rango o ser generico
 
 ### TABLA 10: document_types
 
-Tipos de documento habilitados en el municipio. Copiados del catalogo global.
+Tipos de documento habilitados en la organizacion. Copiados del catalogo global.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -354,7 +354,7 @@ Documentos oficiales firmados y numerados. Inmutables despues de la firma.
 
 ### TABLA 17: case_templates
 
-Plantillas de expediente habilitadas en el municipio. Copiadas del catalogo global.
+Plantillas de expediente habilitadas en la organizacion. Copiadas del catalogo global.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -379,7 +379,7 @@ Departamentos autorizados para crear expedientes de cada tipo.
 
 ### TABLA 19: cases
 
-Expedientes del municipio.
+Expedientes de la organizacion.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -462,7 +462,7 @@ Propuestas de vinculacion de borradores a expedientes (pendientes de aprobacion)
 
 ### TABLA 23: settings
 
-Configuracion del municipio. Una unica fila por municipio.
+Configuracion de la organizacion. Una unica fila por organizacion.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|
@@ -471,7 +471,7 @@ Configuracion del municipio. Una unica fila por municipio.
 | `bucket_oficial` | TEXT | NO | - | Nombre del bucket R2 para docs oficiales |
 | `bucket_tosign` | TEXT | NO | - | Nombre del bucket R2 para docs a firmar |
 | `city` | VARCHAR(100) | SI | `'LATAM'` | Ciudad (aparece en sellos de firma) |
-| `address` | VARCHAR(150) | SI | - | Direccion del municipio |
+| `address` | VARCHAR(150) | SI | - | Direccion de la organizacion |
 | `contact_email` | VARCHAR(100) | SI | - | Email de contacto |
 | `website_url` | VARCHAR(150) | SI | - | Sitio web |
 | `annual_slogan` | VARCHAR(255) | SI | - | Slogan anual |
@@ -554,7 +554,7 @@ Tracking de apertura de notas. Registra si un usuario leyo la nota.
 
 ### TABLA 27: registry_families
 
-Familias de registros del municipio. Copiadas y personalizadas desde `public.global_registry_families`.
+Familias de registros de la organizacion. Copiadas y personalizadas desde `public.global_registry_families`.
 
 | Columna | Tipo | Nullable | Default | Descripcion |
 |---------|------|----------|---------|-------------|

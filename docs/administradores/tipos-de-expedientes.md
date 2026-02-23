@@ -1,6 +1,6 @@
 # Tipos de Expedientes
 
-Configura los tipos de expedientes disponibles en el sistema. Cada municipio selecciona del catalogo global los tipos de expediente que necesita.
+Configura los tipos de expedientes disponibles en el sistema. Cada organizacion selecciona del catalogo global los tipos de expediente que necesita.
 
 ![Tipos de Expedientes](capturas/tipos-de-expedientes.png)
 
@@ -8,7 +8,7 @@ Configura los tipos de expedientes disponibles en el sistema. Cada municipio sel
 
 ## Listado de Tipos
 
-La tabla muestra todos los tipos de expediente habilitados para el municipio.
+La tabla muestra todos los tipos de expediente habilitados para la organizacion.
 
 | Columna | Descripcion |
 |---------|-------------|
@@ -36,7 +36,7 @@ Al hacer clic en un tipo se muestra su ficha completa:
 | **Canal de Creacion** | Web |
 | **Depto. Radicacion** | Departamento donde se radican los expedientes |
 | **Estado** | Activo / Inactivo |
-| **Fecha de Creacion** | Fecha en que se agrego al municipio |
+| **Fecha de Creacion** | Fecha en que se agrego a la organizacion |
 
 ### Origen Global
 
@@ -61,7 +61,7 @@ Boton **+ Catalogo Global** muestra todos los tipos de expediente disponibles pa
 |---------|-------------|
 | **Codigo** | Acronimo del tipo en el catalogo global |
 | **Nombre** | Nombre y descripcion |
-| **Agregar** | Boton para habilitar el tipo en el municipio |
+| **Agregar** | Boton para habilitar el tipo en la organizacion |
 
 !!! info "Departamento de Radicacion"
     Al agregar un tipo de expediente desde el catalogo global, el sistema solicita seleccionar el **Departamento de Radicacion** antes de confirmar. Este departamento sera donde se radiquen los expedientes de este tipo.

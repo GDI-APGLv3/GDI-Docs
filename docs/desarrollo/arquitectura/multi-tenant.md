@@ -2,7 +2,7 @@
 
 ## Concepto
 
-GDI Latam usa una estrategia de **schema-per-tenant** en PostgreSQL. Cada municipio tiene su propio schema de base de datos, lo que garantiza aislamiento completo de datos sin necesidad de bases de datos separadas.
+GDI Latam usa una estrategia de **schema-per-tenant** en PostgreSQL. Cada organizacion tiene su propio schema de base de datos, lo que garantiza aislamiento completo de datos sin necesidad de bases de datos separadas.
 
 ```
 PostgreSQL (Railway)
@@ -44,12 +44,12 @@ PostgreSQL (Railway)
 
 Los schemas siguen el patron `{numero}_{nombre}`:
 
-| Schema | Municipio | Uso |
+| Schema | Organizacion | Uso |
 |--------|-----------|-----|
-| `200_muni` | Municipio de prueba | Desarrollo y demos |
+| `200_muni` | Organizacion de prueba | Desarrollo y demos |
 | `200_muni_audit` | Auditoria de test | Logs de cambios |
 
-Cada municipio nuevo recibe un numero unico y su nombre como identificador.
+Cada organizacion nueva recibe un numero unico y su nombre como identificador.
 
 ## Tenant Middleware
 
@@ -151,13 +151,13 @@ get_tenant_r2_client(*, schema_name: str)
 
 ### Por que keyword-only
 
-1. **Previene SQL injection de tenant** (tenant leakage entre municipios)
+1. **Previene SQL injection de tenant** (tenant leakage entre organizaciones)
 2. **Errores detectados en runtime** si se olvida el `=`
 3. **Imposible confundir orden de parametros** cuando hay multiples argumentos
 
 ## Ejemplo de Query con Schema
 
-Los schemas de municipio pueden empezar con numero (ej: `200_muni`), lo que requiere comillas dobles en SQL:
+Los schemas de organizacion pueden empezar con numero (ej: `200_muni`), lo que requiere comillas dobles en SQL:
 
 ```sql
 -- Query directa con schema
@@ -237,7 +237,7 @@ pool = await asyncpg.create_pool(dsn=DATABASE_URL, min_size=1, max_size=5)
 
 ## Buckets R2 por Tenant
 
-El almacenamiento en Cloudflare R2 tambien es por tenant. Los nombres de bucket incluyen el identificador del municipio:
+El almacenamiento en Cloudflare R2 tambien es por tenant. Los nombres de bucket incluyen el identificador de la organizacion:
 
 ```
 Cloudflare R2

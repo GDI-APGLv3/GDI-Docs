@@ -50,7 +50,7 @@ Cada fila de documento muestra:
 | **Referencia** | Titulo descriptivo del documento | *Creacion EE-2026-000019-TXST-INTE* |
 | **Numero oficial** | Identificador unico del documento, con boton para copiar | `CAEX-2026-00000133-TXST-INTE` |
 
-Al hacer click en un documento de la lista, se muestra una **vista previa del PDF** en el panel derecho. Por ejemplo, al seleccionar el documento 001 (la caratula CAEX), se muestra el PDF con el logo del municipio, el tipo de expediente, el numero oficial, el motivo y la reparticion iniciadora.
+Al hacer click en un documento de la lista, se muestra una **vista previa del PDF** en el panel derecho. Por ejemplo, al seleccionar el documento 001 (la caratula CAEX), se muestra el PDF con el logo de la organizacion, el tipo de expediente, el numero oficial, el motivo y la reparticion iniciadora.
 
 !!! info "Primer documento: Caratula (CAEX)"
     El documento numero 001 de todo expediente es siempre la **caratula** (tipo CAEX), generada automaticamente por el sistema al crear el expediente. Contiene los datos basicos: tipo, numero, motivo y reparticion iniciadora.

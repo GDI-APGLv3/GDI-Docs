@@ -1,9 +1,9 @@
 # Tipos de Expediente
 
-El sistema incluye **30 tipos de expediente** globales. Cada municipio habilita su propia seleccion a partir de este catalogo. El tipo de expediente define la **trata** (categoria del tramite) y aparece en el numero oficial del expediente.
+El sistema incluye **30 tipos de expediente** globales. Cada organizacion habilita su propia seleccion a partir de este catalogo. El tipo de expediente define la **trata** (categoria del tramite) y aparece en el numero oficial del expediente.
 
-!!! info "Disponibilidad por municipio"
-    Cada municipio habilita su propia seleccion de tipos a partir de este catalogo global. Es posible que no veas todos los tipos listados aqui.
+!!! info "Disponibilidad por organizacion"
+    Cada organizacion habilita su propia seleccion de tipos a partir de este catalogo global. Es posible que no veas todos los tipos listados aqui.
 
 ---
 

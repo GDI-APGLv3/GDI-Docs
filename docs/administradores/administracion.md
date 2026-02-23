@@ -1,6 +1,6 @@
 # Administracion
 
-Gestiona que usuarios tienen permisos de administrador en el BackOffice. Los administradores pueden acceder a todas las secciones de configuracion del municipio.
+Gestiona que usuarios tienen permisos de administrador en el BackOffice. Los administradores pueden acceder a todas las secciones de configuracion de la organizacion.
 
 ![Administracion](capturas/administracion.png)
 

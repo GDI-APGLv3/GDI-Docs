@@ -1,13 +1,13 @@
 # Tipos de Documento
 
-El sistema incluye **61 tipos de documento** globales. Cada municipio habilita su propia seleccion a partir de este catalogo. Los tipos se dividen en **3 categorias** segun como se crea el contenido:
+El sistema incluye **61 tipos de documento** globales. Cada organizacion habilita su propia seleccion a partir de este catalogo. Los tipos se dividen en **3 categorias** segun como se crea el contenido:
 
 - **Documentos HTML** (41 tipos): se redactan en el editor de texto enriquecido del sistema.
 - **Documentos importados** (18 tipos): se sube un archivo PDF externo.
 - **Tipos internos** (2 tipos): los genera el sistema automaticamente y no estan disponibles en el selector.
 
-!!! info "Disponibilidad por municipio"
-    Cada municipio habilita su propia seleccion de tipos a partir de este catalogo global. Es posible que no veas todos los tipos listados aqui.
+!!! info "Disponibilidad por organizacion"
+    Cada organizacion habilita su propia seleccion de tipos a partir de este catalogo global. Es posible que no veas todos los tipos listados aqui.
 
 ---
 
@@ -121,7 +121,7 @@ Si no estas seguro de que tipo seleccionar, usa esta guia rapida:
 ## Preguntas frecuentes
 
 ??? question "Puedo ver todos los tipos del catalogo?"
-    No necesariamente. Cada municipio habilita los tipos que necesita. Si un tipo no aparece en el selector al crear un documento, significa que tu municipio no lo tiene habilitado.
+    No necesariamente. Cada organizacion habilita los tipos que necesita. Si un tipo no aparece en el selector al crear un documento, significa que tu organizacion no lo tiene habilitado.
 
 ??? question "Cual es la diferencia entre un documento HTML y uno importado?"
     Un documento **HTML** se redacta directamente en el editor de texto de GDI. Un documento **importado** se crea subiendo un archivo PDF externo. Ambos pasan por el mismo proceso de firma.

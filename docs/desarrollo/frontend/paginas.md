@@ -8,7 +8,7 @@ Todas las paginas usan Next.js Pages Router. Cada archivo en `src/pages/` se map
 |------|---------|:-------------:|-------------|
 | `/` | `index.tsx` | No | Landing page, redirect si autenticado |
 | `/login` | `login/` | No | Login con Auth0 |
-| `/select-tenant` | `select-tenant/` | Si | Selector de municipio (multi-tenant) |
+| `/select-tenant` | `select-tenant/` | Si | Selector de organizacion (multi-tenant) |
 | `/dashboard` | `dashboard/` | Si | Panel principal con feed de actividad |
 | `/documentos` | `documentos/` | Si | Lista de documentos del usuario |
 | `/creacion-documento` | `creacion-documento/` | Si | Editor rich text de documentos |

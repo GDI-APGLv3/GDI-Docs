@@ -31,7 +31,7 @@ Terminos y conceptos utilizados en el sistema GDI, organizados por audiencia.
 :   Funcion de la pantalla Home que copia al portapapeles las instrucciones para conectar un asistente AI externo (ChatGPT, Claude, etc.) con GDI.
 
 **Departamento**
-:   Division mayor de la estructura organizativa del municipio (ej: Intendencia, Legal, Hacienda). Cada departamento contiene uno o mas sectores.
+:   Division mayor de la estructura organizativa de la organizacion (ej: Intendencia, Legal, Hacienda). Cada departamento contiene uno o mas sectores.
 
 **Documento**
 :   Pieza documental oficial creada en el sistema. Puede ser de tipo HTML (redactado en el editor) o Importado (PDF cargado). Todo documento tiene una referencia, firmantes y un tipo.
@@ -78,8 +78,8 @@ Terminos y conceptos utilizados en el sistema GDI, organizados por audiencia.
 **Subsanacion**
 :   Proceso de correccion de un documento rechazado. El creador edita el documento y lo vuelve a enviar a firma.
 
-**Tenant / Municipio**
-:   Cada municipio es un "inquilino" independiente en el sistema con su propia base de datos, configuracion, tipos de documento y usuarios.
+**Tenant / Organizacion**
+:   Cada organizacion es un "inquilino" independiente en el sistema con su propia base de datos, configuracion, tipos de documento y usuarios.
 
 **Transferencia**
 :   Movimiento que traspasa el control de un expediente de un sector a otro. El sector original pierde la administracion.
@@ -95,10 +95,10 @@ Terminos y conceptos utilizados en el sistema GDI, organizados por audiencia.
 ## Terminos de Administracion
 
 **BackOffice**
-:   Panel de administracion del sistema. Permite gestionar municipios, usuarios, permisos, sectores y configuracion.
+:   Panel de administracion del sistema. Permite gestionar organizaciones, usuarios, permisos, sectores y configuracion.
 
 **Multi-Tenant**
-:   Arquitectura donde cada municipio tiene su propio schema PostgreSQL. El schema se determina por el `tenant_id` del JWT.
+:   Arquitectura donde cada organizacion tiene su propio schema PostgreSQL. El schema se determina por el `tenant_id` del JWT.
 
 **Rank**
 :   Nivel jerarquico de un funcionario dentro del organigrama. Determina que tipos de documentos puede firmar.
@@ -180,7 +180,7 @@ Terminos y conceptos utilizados en el sistema GDI, organizados por audiencia.
 :   Tipo de documento oficial. Requiere firma del funcionario con rank adecuado.
 
 **Schema (PostgreSQL)**
-:   Namespace de base de datos. `public` contiene tablas globales (tenants, users). Cada municipio tiene su propio schema (ej: `200_muni`).
+:   Namespace de base de datos. `public` contiene tablas globales (tenants, users). Cada organizacion tiene su propio schema (ej: `200_muni`).
 
 **shadcn/ui**
 :   Libreria de componentes React usada en el Frontend. Basada en Radix UI + Tailwind.

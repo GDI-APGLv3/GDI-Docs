@@ -1,6 +1,6 @@
 # Tipos de Documentos
 
-Configura los tipos de documentos disponibles en el sistema. Cada municipio selecciona del catalogo global los tipos que necesita y puede personalizar sus restricciones.
+Configura los tipos de documentos disponibles en el sistema. Cada organizacion selecciona del catalogo global los tipos que necesita y puede personalizar sus restricciones.
 
 ![Tipos de Documentos](capturas/tipos-de-documentos.png)
 
@@ -8,7 +8,7 @@ Configura los tipos de documentos disponibles en el sistema. Cada municipio sele
 
 ## Listado de Tipos
 
-La tabla muestra todos los tipos de documento habilitados para el municipio.
+La tabla muestra todos los tipos de documento habilitados para la organizacion.
 
 | Columna | Descripcion |
 |---------|-------------|
@@ -38,7 +38,7 @@ Al hacer clic en un tipo se muestra su ficha completa:
 | **Tipo de Firma** | Digital |
 | **Estado** | Activo / Inactivo |
 | **Confiable** | Gobierno |
-| **Fecha de Creacion** | Fecha en que se agrego al municipio |
+| **Fecha de Creacion** | Fecha en que se agrego a la organizacion |
 
 ### Origen Global
 
@@ -64,7 +64,7 @@ Define que rango minimo necesita un funcionario para **numerar** (firmar como nu
 
 ## Catalogo Global
 
-Boton **+ Catalogo Global** muestra todos los tipos disponibles para agregar al municipio.
+Boton **+ Catalogo Global** muestra todos los tipos disponibles para agregar a la organizacion.
 
 ![Catalogo Global de Documentos](capturas/tipos-documentos-catalogo-global.png)
 
@@ -74,4 +74,4 @@ Boton **+ Catalogo Global** muestra todos los tipos disponibles para agregar al 
 | **Nombre** | Nombre y descripcion |
 | **Tipo** | HTML o Importado |
 | **Firma** | Obligatoria u Opcional |
-| **Agregar** | Boton para habilitar el tipo en el municipio |
+| **Agregar** | Boton para habilitar el tipo en la organizacion |

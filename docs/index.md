@@ -26,7 +26,7 @@ Selecciona la seccion que corresponde a tu perfil:
 
     ---
 
-    Panel de administracion (BackOffice): gestion de municipios, usuarios, permisos, sectores y configuracion del sistema.
+    Panel de administracion (BackOffice): gestion de organizaciones, usuarios, permisos, sectores y configuracion del sistema.
 
     [:octicons-arrow-right-24: Ir a administracion](administradores/index.md)
 

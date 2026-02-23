@@ -26,7 +26,7 @@ GDI-FRONTEND/
 │   │   ├── notas/                # Notas internas
 │   │   ├── notificaciones/       # Centro de notificaciones
 │   │   ├── previsualizar-documento/ # Preview PDF
-│   │   └── select-tenant/        # Selector de municipio
+│   │   └── select-tenant/        # Selector de organizacion
 │   │
 │   ├── components/               # Componentes React por modulo
 │   │   ├── ui/                   # shadcn/ui (13 componentes base)

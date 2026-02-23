@@ -2,14 +2,14 @@
 
 ## Overview
 
-GDI Latam utiliza **PostgreSQL 17** como motor de base de datos, con arquitectura **multi-tenant** basada en schemas. Cada municipio opera en su propio schema aislado, compartiendo tablas globales del schema `public`.
+GDI Latam utiliza **PostgreSQL 17** como motor de base de datos, con arquitectura **multi-tenant** basada en schemas. Cada organizacion opera en su propio schema aislado, compartiendo tablas globales del schema `public`.
 
 | Componente | Tecnologia |
 |------------|------------|
 | Motor | PostgreSQL 17.0+ |
 | Extensiones | pgvector, pg_trgm, unaccent, uuid-ossp |
 | Hosting | Railway Managed PostgreSQL |
-| Multi-tenant | Un schema por municipio |
+| Multi-tenant | Un schema por organizacion |
 | Connection Pool | PgBouncer (transaction mode) |
 | ORM | Ninguno (psycopg2 directo con RealDictCursor) |
 
@@ -79,19 +79,19 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 ### Schema `public` (9 tablas)
 
-Contiene datos globales compartidos por todos los municipios: roles del sistema, tipos de documento maestros, plantillas de expediente, registro de municipios activos y autenticacion API.
+Contiene datos globales compartidos por todas las organizaciones: roles del sistema, tipos de documento maestros, plantillas de expediente, registro de organizaciones activas y autenticacion API.
 
 Ver: [Schema Public](schema-public.md)
 
-### Schema por municipio (33 tablas)
+### Schema por organizacion (33 tablas)
 
-Cada municipio tiene su propio schema con la estructura completa: organizacion, usuarios, documentos, expedientes, configuracion, agente IA, notas y registros.
+Cada organizacion tiene su propio schema con la estructura completa: estructura organizacional, usuarios, documentos, expedientes, configuracion, agente IA, notas y registros.
 
 Ver: [Schema Municipio](schema-municipio.md)
 
 ### Schema de auditoria (1 tabla)
 
-Cada municipio tiene un schema `{nombre}_audit` con una tabla `audit_log` y triggers automaticos sobre 6 tablas criticas.
+Cada organizacion tiene un schema `{nombre}_audit` con una tabla `audit_log` y triggers automaticos sobre 6 tablas criticas.
 
 Ver: [Schema Audit](schema-audit.md)
 
@@ -109,7 +109,7 @@ Ver: [Schema Audit](schema-audit.md)
 
 ## Flujo de Deploy
 
-=== "Produccion (municipio nuevo)"
+=== "Produccion (organizacion nueva)"
 
     ```
     01-install.sql       -- Extensiones + ENUMs + 9 tablas public (una vez)

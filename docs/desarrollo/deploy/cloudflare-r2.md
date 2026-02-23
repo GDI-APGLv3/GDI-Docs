@@ -8,7 +8,7 @@ Se utiliza para almacenar:
 
 - **PDFs oficiales** firmados (documentos finales)
 - **PDFs pendientes de firma** (borradores enviados a firma)
-- **Assets** del sistema (logos, isologos de municipios)
+- **Assets** del sistema (logos, isologos de organizaciones)
 
 ---
 
@@ -18,7 +18,7 @@ Se utiliza para almacenar:
 |--------|-----------|--------|
 | `tenant-<id>-oficial` | PDFs firmados y oficiales | GDI-Backend (lectura/escritura) |
 | `tenant-<id>-tosign` | PDFs pendientes de firma (temporales) | GDI-Backend (lectura/escritura) |
-| `gdi-assets` | Logos e imagenes de municipios | GDI-BackOffice-Back (escritura), Frontends (lectura) |
+| `gdi-assets` | Logos e imagenes de organizaciones | GDI-BackOffice-Back (escritura), Frontends (lectura) |
 
 !!! info "Convenciones de naming"
     Los nombres de bucket siguen el patron `tenant-<schema_name>-<tipo>`. Ejemplo: para el schema `200_muni`, los buckets son `tenant-test-oficial` y `tenant-test-tosign`.
@@ -187,7 +187,7 @@ graph LR
 
 ## Multi-Tenant
 
-Cada municipio (tenant) tiene sus propios buckets con un prefijo de schema en las keys:
+Cada organizacion (tenant) tiene sus propios buckets con un prefijo de schema en las keys:
 
 ```
 # Tenant 200_muni

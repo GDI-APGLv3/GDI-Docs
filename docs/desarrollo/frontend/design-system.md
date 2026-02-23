@@ -21,7 +21,7 @@ El design system de GDI-FRONTEND esta basado en shadcn/ui (variante New York) co
 
 ### Color Primario (Dinamico por Tenant)
 
-El color primario cambia segun el municipio (tenant) seleccionado. Se implementa mediante CSS variables que se sobreescriben dinamicamente con JavaScript.
+El color primario cambia segun la organizacion (tenant) seleccionada. Se implementa mediante CSS variables que se sobreescriben dinamicamente con JavaScript.
 
 **Escala disponible en Tailwind**:
 

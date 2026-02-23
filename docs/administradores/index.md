@@ -7,7 +7,7 @@ hide:
 
 **Panel de administracion** del Sistema de Gestion Documental Inteligente para gobiernos LATAM.
 
-Esta seccion documenta el uso del BackOffice, la herramienta de administracion para gestionar municipios, usuarios, permisos, sectores y configuracion del sistema.
+Esta seccion documenta el uso del BackOffice, la herramienta de administracion para gestionar organizaciones, usuarios, permisos, sectores y configuracion del sistema.
 
 ---
 
@@ -17,7 +17,7 @@ Esta seccion documenta el uso del BackOffice, la herramienta de administracion p
 
     ---
 
-    Datos institucionales del municipio: nombre, acronimo, ciudad de firma, logo y color institucional.
+    Datos institucionales de la organizacion: nombre, acronimo, ciudad de firma, logo y color institucional.
 
     [:octicons-arrow-right-24: Ver seccion](informacion-general.md)
 
@@ -81,7 +81,7 @@ Esta seccion documenta el uso del BackOffice, la herramienta de administracion p
 
     ---
 
-    Copias de seguridad de los datos del municipio.
+    Copias de seguridad de los datos de la organizacion.
 
     [:octicons-arrow-right-24: Ver seccion](backups.md)
 
@@ -95,7 +95,7 @@ El sidebar izquierdo del BackOffice contiene las siguientes secciones:
 
 | Seccion | Descripcion | Estado |
 |---------|-------------|--------|
-| **Informacion general** | Datos y branding del municipio | Documentado |
+| **Informacion general** | Datos y branding de la organizacion | Documentado |
 | **Roles y Sellos** | Jerarquias y sellos de firma | Documentado |
 | **Organigrama** | Estructura organizativa | Documentado |
 | **Tipos de Documentos** | Catalogo de tipos de documento | Documentado |

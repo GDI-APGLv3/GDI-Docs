@@ -25,7 +25,7 @@ GDI-BD/
 
 ## Flujos de Deploy
 
-=== "Produccion (municipio nuevo)"
+=== "Produccion (organizacion nueva)"
 
     Se ejecutan 3 scripts en orden. Los dos primeros solo se ejecutan una vez al crear la BD.
 
@@ -100,14 +100,14 @@ Inserta datos iniciales en las tablas globales.
 
 ### 03-create-municipio.sql
 
-Template para crear un municipio nuevo. Contiene **9 placeholders** que deben reemplazarse antes de ejecutar.
+Template para crear una organizacion nueva. Contiene **9 placeholders** que deben reemplazarse antes de ejecutar.
 
 **Placeholders:**
 
 | Placeholder | Ejemplo | Descripcion |
 |-------------|---------|-------------|
 | `{SCHEMA_NAME}` | `201_otra` | Nombre del schema |
-| `{MUNICIPALITY_NAME}` | `Municipalidad de Buenos Aires` | Nombre completo |
+| `{MUNICIPALITY_NAME}` | `Municipalidad de Buenos Aires` | Nombre completo de la organizacion |
 | `{ACRONYM}` | `BSAS` | Acronimo (2-4 letras) |
 | `{COUNTRY}` | `AR` | Codigo de pais |
 | `{SCHEMA_NUMBER}` | `101` | Numero auto-incremental |
@@ -136,7 +136,7 @@ Script autonomo que crea el tenant `200_muni` completo. No necesita `03-create-m
 |---------|-----------|
 | 1 | Schema `200_muni`: 33 tablas + indices + trigger sync |
 | 2 | Schema `200_muni_audit`: audit_log + fn_log_change + 6 triggers |
-| 3 | Datos iniciales: settings + estado_users + municipio en public |
+| 3 | Datos iniciales: settings + estado_users + organizacion en public |
 | 4 | Datos demo: departamentos, sectores, ranks, usuarios, doc types, case templates, registry families |
 | 5 | Drafts de bienvenida: 5 documentos borrador tipo IF |
 
@@ -193,7 +193,7 @@ python install.py
 
 ### create_municipio.py
 
-Crea un municipio nuevo de forma interactiva.
+Crea una organizacion nueva de forma interactiva.
 
 ```bash
 cd GDI-BD/tools

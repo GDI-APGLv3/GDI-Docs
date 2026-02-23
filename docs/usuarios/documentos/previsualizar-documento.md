@@ -46,7 +46,7 @@ El area principal muestra el documento renderizado en formato PDF dentro de un v
 
 El PDF generado incluye:
 
-- **Logo del municipio** en el encabezado (ej: "Municipalidad del Futuro")
+- **Logo de la organizacion** en el encabezado (ej: "Municipalidad del Futuro")
 - **Tipo de documento**: sigla y nombre (ej: "IF - Informe")
 - **Placeholders**: "[ciudad y fecha a asignar]", "[numero a asignar]" (se completan al firmar)
 - **Referencia**: el titulo descriptivo ingresado por el usuario

@@ -65,7 +65,7 @@ La zona central muestra el titulo **"Importar PDF"** con el texto descriptivo: *
 
 ## Tipos de documento importados
 
-Los tipos de documento importados disponibles dependen de la configuracion de cada municipio. Algunos ejemplos comunes son: Informe Grafico Importado (IFGRA), Contrato (CONT), Oficio Judicial (OFJUD), Plano (PLANO), entre otros.
+Los tipos de documento importados disponibles dependen de la configuracion de cada organizacion. Algunos ejemplos comunes son: Informe Grafico Importado (IFGRA), Contrato (CONT), Oficio Judicial (OFJUD), Plano (PLANO), entre otros.
 
 Para ver la lista completa de tipos de documento importados, consultar el [Catalogo de Tipos de Documento](../catalogos/tipos-de-documento.md#documentos-importados-18-tipos).
 
