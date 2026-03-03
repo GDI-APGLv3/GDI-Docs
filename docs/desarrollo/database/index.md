@@ -8,7 +8,7 @@ GDI Latam utiliza **PostgreSQL 17** como motor de base de datos, con arquitectur
 |------------|------------|
 | Motor | PostgreSQL 17.0+ |
 | Extensiones | pgvector, pg_trgm, unaccent, uuid-ossp |
-| Hosting | Railway Managed PostgreSQL |
+| Hosting | Docker (pgvector/pgvector:pg17) |
 | Multi-tenant | Un schema por organizacion |
 | Connection Pool | PgBouncer (transaction mode) |
 | ORM | Ninguno (psycopg2 directo con RealDictCursor) |
@@ -16,7 +16,7 @@ GDI Latam utiliza **PostgreSQL 17** como motor de base de datos, con arquitectur
 ## Arquitectura Multi-Schema
 
 ```
-PostgreSQL (Railway)
+PostgreSQL
 |
 +-- public/                         # Compartido por todos los tenants
 |   +-- roles                       # 3 roles del sistema
@@ -44,13 +44,13 @@ PostgreSQL (Railway)
 
 ## Ambientes
 
-| Ambiente | Nombre Railway | Host | Puerto | Uso |
-|----------|---------------|------|--------|-----|
-| dev | prod-railway | prod-host.proxy.rlwy.net | default | Demo online - **NO TOCAR** |
-| dev-test | dev-railway | dev-host.proxy.rlwy.net | 5432 | Desarrollo y pruebas |
+| Ambiente | Host | Puerto | Uso |
+|----------|------|--------|-----|
+| Produccion | `postgres:5432` (Docker interno) | 5432 | Produccion |
+| Desarrollo | `localhost:5432` | 5432 | Desarrollo y pruebas |
 
 !!! warning "Ambiente de desarrollo"
-    Siempre trabajar sobre **dev-test (dev-railway)**. El ambiente **dev (prod-railway)** es la demo publica y no debe modificarse sin autorizacion.
+    La base de datos de produccion no debe modificarse sin autorizacion. Para desarrollo usar una instancia local de PostgreSQL.
 
 ### Conexion
 

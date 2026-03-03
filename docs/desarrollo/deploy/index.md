@@ -2,14 +2,13 @@
 
 ## Vision General
 
-GDI Latam opera sobre una arquitectura cloud distribuida en cuatro plataformas principales:
+GDI Latam opera sobre una arquitectura cloud distribuida en tres plataformas principales:
 
 | Plataforma | Rol | Servicios |
 |------------|-----|-----------|
-| **Railway** | Hosting de aplicaciones y base de datos | 10+ servicios (backends, frontends, microservicios, PostgreSQL) |
+| **Docker** | Hosting de aplicaciones y base de datos | 7+ servicios (backends, frontends, microservicios, PostgreSQL) |
 | **Cloudflare R2** | Almacenamiento de objetos (S3-compatible) | Buckets para PDFs oficiales, PDFs pendientes de firma, assets |
 | **Auth0** | Identidad y autenticacion | OAuth 2.0, JWT, SSO para todas las aplicaciones |
-| **GitHub** | Repositorios y CI/CD | Organizacion GDI-ALFA, deploy automatico via Railway |
 
 ---
 
@@ -26,12 +25,12 @@ graph TB
         Auth0_Tenant["tu-tenant.us.auth0.com"]
     end
 
-    subgraph GitHub["GitHub (GDI-ALFA)"]
+    subgraph GitHub["GitHub"]
         Repos["Repositorios Git"]
-        Repos --> |push a main| Railway_Deploy
+        Repos --> |CI/CD| Docker_Build["Build Docker Images"]
     end
 
-    subgraph Railway["Railway (Hosting)"]
+    subgraph Docker["Docker Compose"]
         subgraph Publicos["Servicios Publicos"]
             FE["GDI-FRONTEND<br/>:3003"]
             BE["GDI-Backend<br/>:8000"]
@@ -42,16 +41,12 @@ graph TB
         subgraph Internos["Servicios Internos"]
             PDF["GDI-PDFComposer<br/>:8002"]
             NOT["GDI-Notary<br/>:8001"]
-            MAIL["GDI-eMailService<br/>:8003"]
             AGENT["GDI-AgenteLANG<br/>:8004"]
-            GOT["Gotenberg<br/>:3000"]
         end
 
         subgraph Data["Datos"]
             PG["PostgreSQL 17<br/>+ pgvector"]
         end
-
-        Railway_Deploy["Auto-Deploy"]
     end
 
     subgraph Cloudflare["Cloudflare R2"]
@@ -70,14 +65,12 @@ graph TB
 
     BE --> PDF
     BE --> NOT
-    BE --> MAIL
     BE --> AGENT
     BE --> PG
     BE --> Cloudflare
 
     BOBE --> PG
 
-    PDF --> GOT
     AGENT --> PG
     AGENT --> BE
 ```
@@ -95,37 +88,19 @@ graph TB
 | GDI-BackOffice-Front | Next.js 15, React 18, TypeScript | 3013 | Panel de administracion |
 | GDI-BackOffice-Back | FastAPI, Python 3.12, psycopg2 | 8010 | API REST BackOffice |
 
-### Servicios Internos (solo accesibles via Railway internal)
+### Servicios Internos (solo accesibles dentro de la red Docker)
 
 | Servicio | Stack | Puerto | Proposito |
 |----------|-------|--------|-----------|
-| GDI-PDFComposer | FastAPI, Jinja2, Gotenberg | 8002 | Generacion de PDFs (preview, final, caratulas, pases) |
+| GDI-PDFComposer | FastAPI, Jinja2, WeasyPrint, PyMuPDF | 8002 | Generacion de PDFs (preview, final, caratulas, pases) |
 | GDI-Notary | FastAPI, pyHanko, PyMuPDF | 8001 | Firma digital PAdES y visual de PDFs |
-| GDI-eMailService | FastAPI, Jinja2, SMTP | 8003 | Emails transaccionales |
 | GDI-AgenteLANG | FastAPI, LangGraph, pgvector | 8004 | Agente IA con RAG |
-| Gotenberg | Chromium headless | 3000 | Motor de conversion HTML a PDF |
 
 ### Base de Datos
 
 | Servicio | Version | Tipo | Proposito |
 |----------|---------|------|-----------|
-| PostgreSQL | 17+ | Railway Managed | BD principal con pgvector para embeddings |
-
----
-
-## Ambientes
-
-| Ambiente | Nombre Railway | Uso | Estado |
-|----------|---------------|-----|--------|
-| **dev** | prod-railway | Demo online para stakeholders | NO TOCAR |
-| **dev-test** | dev-railway | Desarrollo y pruebas | Uso activo |
-
-!!! danger "Regla critica"
-    El ambiente **dev (prod-railway)** es la demo en vivo. Nunca modificar datos ni hacer deployments experimentales en este ambiente.
-
-!!! tip "Desarrollo"
-    Siempre usar el ambiente **dev-test (dev-railway)** para desarrollo y pruebas.
-    Connection string: `postgresql://postgres:<PASSWORD>@dev-host.proxy.rlwy.net:5432/railway`
+| PostgreSQL | 17+ | Docker (pgvector/pgvector:pg17) | BD principal con pgvector para embeddings |
 
 ---
 
@@ -133,26 +108,24 @@ graph TB
 
 ### Comunicacion Externa (URLs publicas)
 
-Los frontends y clientes MCP se comunican con los backends a traves de URLs publicas Railway (`*.up.railway.app`):
+Los frontends y clientes MCP se comunican con los backends a traves de URLs publicas configuradas con un reverse proxy o dominio:
 
 ```
-Browser → https://mi-frontend.up.railway.app → https://mi-backend.up.railway.app
+Browser → https://tu-frontend.tu-dominio.com → https://tu-backend.tu-dominio.com
 ```
 
-### Comunicacion Interna (URLs internas Railway)
+### Comunicacion Interna (Docker Networking)
 
-Los backends se comunican con los microservicios a traves de URLs internas Railway, que son mas rapidas y sin costo de egress:
+Los backends se comunican con los microservicios a traves de la red interna de Docker Compose, usando el nombre del servicio como hostname:
 
 ```
-GDI-Backend → http://pdfcomposer-svc.railway.internal:8002
-GDI-Backend → http://notary-svc.railway.internal:8001
-GDI-Backend → http://email-svc.railway.internal:8003
-GDI-Backend → http://agente-svc.railway.internal:8004
-PDFComposer → http://gotenberg.railway.internal:3000
+GDI-Backend → http://pdfcomposer:8002
+GDI-Backend → http://notary:8001
+GDI-Backend → http://agentelang:8004
 ```
 
-!!! warning "Internal URLs"
-    Las URLs internas (`*.railway.internal`) solo funcionan entre servicios del mismo proyecto Railway. No son accesibles desde internet ni desde maquinas locales.
+!!! warning "Docker Networking"
+    Las URLs internas (ej: `http://pdfcomposer:8002`) solo funcionan entre servicios de la misma red Docker Compose. No son accesibles desde internet ni desde maquinas fuera del host.
 
 ---
 
@@ -163,13 +136,13 @@ PDFComposer → http://gotenberg.railway.internal:3000
 | Capa | Mecanismo | Proveedor |
 |------|-----------|-----------|
 | Usuarios finales | OAuth 2.0 + JWT | Auth0 |
-| Comunicacion entre servicios | API Key (`X-API-Key` header) | Configurado en variables Railway |
+| Comunicacion entre servicios | API Key (`X-API-Key` header) | Configurado en variables de entorno |
 | MCP Server | OAuth 2.0 (RFC 9728) | Auth0 |
 | REST API externa | API Key + `X-User-ID` | Almacenado en BD |
 
 ### Variables Sensibles
 
-Todas las credenciales se almacenan como variables de entorno en Railway. Nunca en codigo fuente.
+Todas las credenciales se almacenan como variables de entorno (archivos `.env` o seccion `environment:` en Docker Compose). Nunca en codigo fuente.
 
 | Tipo | Ejemplos |
 |------|----------|
@@ -184,6 +157,6 @@ Todas las credenciales se almacenan como variables de entorno en Railway. Nunca 
 
 | Seccion | Contenido |
 |---------|-----------|
-| [Railway](railway.md) | Proyecto, servicios, ambientes, variables, internal URLs |
+| [Docker](railway.md) | Servicios, Docker Compose, networking, health checks |
 | [Cloudflare R2](cloudflare-r2.md) | Buckets, credenciales, API S3, estructura de keys |
-| [GitHub Actions](github-actions.md) | Workflows CI/CD, secrets, deploy automatico |
+| [GitHub Actions](github-actions.md) | Workflows CI/CD, build de imagenes Docker |

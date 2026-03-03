@@ -16,12 +16,12 @@ psql "postgresql://USER:PASSWORD@HOST:PORT/DATABASE" -c "SET search_path TO '200
 
 1. Descargar desde [pgadmin.org](https://www.pgadmin.org/)
 2. Registrar servidor nuevo:
-    - **Host**: el host de Railway (ej: `dev-host.proxy.rlwy.net`)
-    - **Port**: el puerto de Railway (ej: `5432`)
+    - **Host**: el host del servidor (ej: `localhost`)
+    - **Port**: el puerto PostgreSQL (ej: `5432`)
     - **Database**: `railway`
     - **Username**: `postgres`
-    - **Password**: password de Railway
-3. En el panel izquierdo, expandir: Servers > railway > Databases > railway > Schemas
+    - **Password**: password de la base de datos
+3. En el panel izquierdo, expandir: Servers > PostgreSQL > Databases > railway > Schemas
 4. Los schemas de organizacion aparecen como `200_muni`, `201_otra`, etc.
 
 ### DBeaver
@@ -61,7 +61,7 @@ python install.py
   GDI LATAM - INSTALACION LIMPIA (200_muni)
 ======================================================================
 
-  DATABASE_URL: postgresql://postgres:xxxxx@dev-railway...
+  DATABASE_URL: postgresql://postgres:xxxxx@localhost:5432/railway
   Flujo: 01-install.sql -> 02-seed-global.sql -> 04-seed-demo.sql
 
   ATENCION: Esto eliminara los schemas 200_muni y 200_muni_audit

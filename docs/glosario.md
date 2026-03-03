@@ -137,9 +137,6 @@ Terminos y conceptos utilizados en el sistema GDI, organizados por audiencia.
 **fetchWithAuth**
 :   Funcion wrapper en el Frontend que agrega token Auth0 a todas las peticiones HTTP.
 
-**Gotenberg**
-:   Servicio Docker que convierte HTML a PDF. Usado por PDFComposer.
-
 **JWT (JSON Web Token)**
 :   Token de autenticacion emitido por Auth0. Contiene tenant_id, user_id, email, permissions.
 
@@ -172,9 +169,6 @@ Terminos y conceptos utilizados en el sistema GDI, organizados por audiencia.
 
 **pyHanko**
 :   Libreria Python para firma digital PAdES. Core del servicio Notary.
-
-**Railway**
-:   Plataforma de deployment donde corren todos los servicios de GDI en produccion.
 
 **Resolucion**
 :   Tipo de documento oficial. Requiere firma del funcionario con rank adecuado.

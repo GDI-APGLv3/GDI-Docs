@@ -14,6 +14,14 @@ Selecciona la seccion que corresponde a tu perfil:
 
 <div class="grid cards" markdown>
 
+-   :material-api:{ .lg .middle } **Gateway API**
+
+    ---
+
+    Integracion con GDI: MCP Server para agentes IA y REST API para sistemas externos. 45 endpoints documentados.
+
+    [:octicons-arrow-right-24: Ir a Gateway API](desarrollo/gateway/index.md)
+
 -   :material-account:{ .lg .middle } **Usuarios**
 
     ---
@@ -48,8 +56,9 @@ Selecciona la seccion que corresponde a tu perfil:
 |------|-------------|
 | **Frontend** | Next.js 15, React 18, TypeScript, Tailwind CSS, shadcn/ui |
 | **Backend** | FastAPI, Python 3.12, Auth0, PostgreSQL 17 |
-| **Microservicios** | PDFComposer (Gotenberg), Notary (pyHanko), eMailService, AgenteLANG (LangGraph) |
-| **Infraestructura** | Railway, Cloudflare R2, GitHub Actions |
+| **Gateway API** | MCP Server (14 tools) + REST API (45 endpoints) |
+| **Microservicios** | Notary (pyHanko), AgenteLANG (LangGraph) |
+| **Infraestructura** | Docker, Cloudflare R2, GitHub Actions |
 
 ## Servicios y Puertos
 
@@ -59,11 +68,9 @@ Selecciona la seccion que corresponde a tu perfil:
 | GDI-BackOffice-Front | `:3013` | Next.js 15, React 18, TypeScript |
 | GDI-Backend | `:8000` | FastAPI, Python 3.12 |
 | GDI-BackOffice-Back | `:8010` | FastAPI, Python 3.12 |
+| GDI-Gateway | `:8005` | MCP Server + REST API |
 | GDI-Notary | `:8001` | FastAPI, pyHanko, PyMuPDF |
-| GDI-PDFComposer | `:8002` | FastAPI, Gotenberg, Jinja2 |
-| GDI-eMailService | `:8003` | FastAPI, Jinja2, SMTP |
 | GDI-AgenteLANG | `:8004` | FastAPI, LangGraph, OpenRouter |
-| GDI-MCP | `:8005` | Integrado en Backend |
 
 ---
 

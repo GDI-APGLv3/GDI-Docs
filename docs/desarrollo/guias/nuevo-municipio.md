@@ -293,4 +293,4 @@ curl -X POST http://localhost:8000/documents \
 5. Verificar: Login + crear documento de prueba
 ```
 
-Ver tambien [Railway](../deploy/railway.md) para configurar el servicio en produccion.
+Ver tambien [Docker](../deploy/railway.md) para configurar el servicio en produccion.

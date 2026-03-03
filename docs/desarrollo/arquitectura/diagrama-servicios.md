@@ -24,9 +24,7 @@ graph TB
     subgraph Microservicios["Microservicios"]
         PDF["GDI-PDFComposer<br/>FastAPI :8002"]
         NOT["GDI-Notary<br/>FastAPI :8001"]
-        EMAIL["GDI-eMailService<br/>FastAPI :8003"]
         AGENT["GDI-AgenteLANG<br/>FastAPI :8004"]
-        GOT["Gotenberg<br/>Chromium :3000"]
     end
 
     subgraph Storage["Almacenamiento"]
@@ -51,7 +49,6 @@ graph TB
 
     BE -->|"REST + API Key"| PDF
     BE -->|"REST + API Key"| NOT
-    BE -->|"REST + API Key"| EMAIL
     BE -->|"S3 API"| R2
     BE --> PG
 
@@ -64,8 +61,6 @@ graph TB
     AGENT --> PG
     AGENT -->|"API"| OR
 
-    PDF -->|"HTTP"| GOT
-
     FE -->|"OAuth 2.0"| A0
     BO -->|"OAuth 2.0"| A0
 ```
@@ -77,22 +72,18 @@ graph LR
     subgraph Presentacion["Capa de Presentacion"]
         F1["GDI-FRONTEND :3003"]
         F2["GDI-BackOffice-Front :3013"]
-        F3["Dashboard Frontend :8501"]
     end
 
     subgraph Aplicacion["Capa de Aplicacion"]
         B1["GDI-Backend :8000"]
         B2["GDI-BackOffice-Back :8010"]
         B3["GDI-MCP Server :8005"]
-        B4["Dashboard Backend :8000"]
     end
 
     subgraph Servicios["Capa de Microservicios"]
         S1["GDI-PDFComposer :8002"]
         S2["GDI-Notary :8001"]
-        S3["GDI-eMailService :8003"]
         S4["GDI-AgenteLANG :8004"]
-        S5["Gotenberg :3000"]
     end
 
     subgraph Datos["Capa de Datos"]
@@ -118,11 +109,7 @@ graph LR
 | GDI-AgenteLANG | 8004 | FastAPI + Uvicorn | 1 + AIWorker background | HTTP |
 | GDI-PDFComposer | 8002 | FastAPI + Gunicorn | 4 Uvicorn workers | HTTP |
 | GDI-Notary | 8001 | FastAPI + Gunicorn | 3 Uvicorn workers | HTTP |
-| GDI-eMailService | 8003 | FastAPI + Uvicorn | 1 worker | HTTP |
-| Gotenberg | 3000 | Go + Chromium headless | - | HTTP |
-| Dashboard Backend | 8000 | FastAPI + Uvicorn | 1 worker | HTTP |
-| Dashboard Frontend | 8501 | Streamlit | 1 worker | HTTP |
-| PostgreSQL | 5432 | PostgreSQL 17 + pgvector | Railway managed | TCP |
+| PostgreSQL | 5432 | PostgreSQL 17 + pgvector | Docker managed | TCP |
 
 ## Dependencias entre Servicios
 
@@ -133,14 +120,11 @@ graph TD
 
     BE --> PDF["GDI-PDFComposer"]
     BE --> NOT["GDI-Notary"]
-    BE --> EMAIL["GDI-eMailService"]
     BE --> R2["Cloudflare R2"]
     BE --> PG["PostgreSQL"]
 
     BOBE --> PG
     BOBE --> R2
-
-    PDF --> GOT["Gotenberg"]
 
     AGENT["GDI-AgenteLANG"] --> BE
     AGENT --> PG
@@ -149,11 +133,9 @@ graph TD
     MCP["GDI-MCP Server"] --> PG
     MCP --> A0["Auth0"]
 
-    DASH["Dashboard GDI"] --> PG
-
     FE --> A0
     BO --> A0
 ```
 
 !!! note "MCP Server integrado"
-    El MCP Server (puerto 8005) esta integrado dentro del repositorio GDI-Backend en la carpeta `api_gateway/`. No es un servicio separado en Railway, sino un modulo del Backend que escucha en un puerto adicional.
+    El MCP Server (puerto 8005) esta integrado dentro del repositorio GDI-Backend en la carpeta `api_gateway/`. No es un servicio separado, sino un modulo del Backend que escucha en un puerto adicional.

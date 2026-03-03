@@ -9,11 +9,11 @@ Guia para levantar el ecosistema GDI Latam en tu maquina local.
 | Python | 3.12+ | Backend principal y microservicios |
 | Node.js | 20+ | Frontends (Next.js 15) |
 | PostgreSQL | 17+ | Con extensiones pgvector, unaccent, pg_trgm |
-| Docker | Latest | Para Gotenberg (motor PDF) |
+| Docker | Latest | Para servicios containerizados |
 | Git | Latest | Cada subcarpeta es un repo independiente |
 
 !!! tip "Versiones exactas"
-    El Backend usa Python 3.12. Los microservicios (PDFComposer, Notary, eMailService) funcionan con Python 3.11+. Los frontends usan Next.js 15 con React 18.
+    El Backend usa Python 3.12. Los microservicios (PDFComposer, Notary) funcionan con Python 3.11+. Los frontends usan Next.js 15 con React 18.
 
 ## Clonar Repositorios
 
@@ -34,7 +34,6 @@ git clone <url>/GDI-BackOffice-Front.git # Panel admin (:3013)
 # Microservicios
 git clone <url>/GDI-PDFComposer.git  # Generador PDFs (:8002)
 git clone <url>/GDI-Notary.git       # Firma digital (:8001)
-git clone <url>/GDI-eMailService.git  # Emails (:8003)
 git clone <url>/GDI-AgenteLANG.git   # Agente IA (:8004)
 
 # Base de datos
@@ -52,7 +51,7 @@ Cada servicio necesita su propio archivo `.env`. A continuacion las variables mi
 
 ```bash
 # Base de datos
-DATABASE_URL=postgresql://postgres:password@localhost:5432/gdi
+DATABASE_URL=postgresql://postgres:password@localhost:5432/railway
 
 # Auth0 (desactivar para desarrollo)
 TESTING_MODE=true
@@ -62,14 +61,11 @@ PDFCOMPOSER_URL=http://localhost:8002
 PDFCOMPOSER_API_KEY=dev-key-pdf
 NOTARY_URL=http://localhost:8001
 NOTARY_API_KEY=dev-key-notary
-EMAILSERVICE_URL=http://localhost:8003
 
 # Cloudflare R2
 CF_R2_ENDPOINT=https://ACCOUNT_ID.r2.cloudflarestorage.com
 CF_R2_ACCESS_KEY_ID=your-access-key
 CF_R2_SECRET_ACCESS_KEY=your-secret-key
-CF_R2_BUCKET_OFICIAL=tenant-test-oficial
-CF_R2_BUCKET_TOSIGN=tenant-test-tosign
 CF_R2_SIGN_EXPIRATION=600
 
 # CORS
@@ -83,7 +79,7 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=password
-DB_NAME=gdi
+DB_NAME=railway
 TESTING_MODE=true
 FRONTEND_URL=http://localhost:3013
 ```
@@ -114,7 +110,6 @@ NEXT_PUBLIC_API_URL=http://localhost:8010
 
 ```bash
 API_KEY=dev-key-pdf
-GOTENBERG_URL=http://localhost:3000
 ```
 
 ### GDI-Notary (.env)
@@ -126,22 +121,10 @@ CERTS_DIR=./certs
 FALLBACK_TO_VISUAL=true
 ```
 
-### GDI-eMailService (.env)
-
-```bash
-API_KEY=dev-key-email
-SMTP_HOST=smtp.mailtrap.io
-SMTP_PORT=587
-SMTP_USER=your-mailtrap-user
-SMTP_PASSWORD=your-mailtrap-pass
-FROM_EMAIL=test@tu-dominio.com
-FROM_NAME=GDI Latam Dev
-```
-
 ### GDI-AgenteLANG (.env)
 
 ```bash
-DATABASE_URL=postgresql://postgres:password@localhost:5432/gdi
+DATABASE_URL=postgresql://postgres:password@localhost:5432/railway
 OPENROUTER_API_KEY=sk-or-your-key
 OPENROUTER_MODEL=google/gemini-2.0-flash-001
 OPENROUTER_FAST_MODEL=meta-llama/llama-3.3-70b-instruct:free
@@ -161,32 +144,20 @@ Ver referencia completa en [Variables de Entorno](../arquitectura/variables-ento
 
 ```bash
 # Instalar extensiones (una vez)
-psql -U postgres -c "CREATE DATABASE gdi;"
+psql -U postgres -c "CREATE DATABASE railway;"
 
 # Ejecutar scripts de GDI-BD en orden
 cd GDI-BD
 
 # Paso 1: Estructura base (extensiones + tablas public)
-psql -U postgres -d gdi -f sql/01-install.sql
+psql -U postgres -d railway -f sql/01-install.sql
 
 # Paso 2: Datos globales (roles, document types, case templates)
-psql -U postgres -d gdi -f sql/02-seed-global.sql
+psql -U postgres -d railway -f sql/02-seed-global.sql
 
 # Paso 3: Schema de prueba 200_muni con datos demo
-psql -U postgres -d gdi -f sql/04-seed-demo.sql
+psql -U postgres -d railway -f sql/04-seed-demo.sql
 ```
-
-### Opcion B: Conectar a Railway dev-test
-
-Si no quieres instalar PostgreSQL local, puedes conectar directamente al ambiente dev-test (dev-railway):
-
-```bash
-# Usar la DATABASE_URL de Railway en tu .env
-DATABASE_URL=postgresql://postgres:PASSWORD@dev-host.proxy.rlwy.net:5432/railway
-```
-
-!!! danger "Ambiente de demo"
-    Nunca conectar a **dev (prod-railway)**. Es el ambiente de demo publica. Usar siempre **dev-test (dev-railway)** para desarrollo.
 
 Ver mas detalles en [Base de Datos](../database/index.md) y [Scripts de Deploy](../database/scripts-deploy.md).
 
@@ -200,9 +171,7 @@ Ver mas detalles en [Base de Datos](../database/index.md) y [Scripts de Deploy](
 | GDI-BackOffice-Front | 3013 | `http://localhost:3013` |
 | GDI-PDFComposer | 8002 | `http://localhost:8002` |
 | GDI-Notary | 8001 | `http://localhost:8001` |
-| GDI-eMailService | 8003 | `http://localhost:8003` |
 | GDI-AgenteLANG | 8004 | `http://localhost:8004` |
-| Gotenberg (Docker) | 3000 | `http://localhost:3000` |
 | PostgreSQL | 5432 | `localhost:5432` |
 
 ## Orden de Inicio Recomendado
@@ -214,9 +183,6 @@ Seguir este orden para evitar errores de dependencia:
 ```bash
 # PostgreSQL (si es local, asegurar que este corriendo)
 pg_isready -U postgres
-
-# Gotenberg (necesario para PDFComposer)
-docker run --rm -p 3000:3000 gotenberg/gotenberg:8
 ```
 
 ### 2. Microservicios
@@ -231,11 +197,6 @@ uvicorn main:app --reload --port 8002
 cd GDI-Notary
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8001
-
-# eMailService (opcional)
-cd GDI-eMailService
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8003
 ```
 
 ### 3. Backends
@@ -267,7 +228,7 @@ npm run dev  # Puerto 3013
 ```
 
 !!! tip "Inicio minimo"
-    Para desarrollo basico de documentos, solo necesitas: PostgreSQL + Gotenberg + PDFComposer + Backend + Frontend. Los demas servicios son opcionales segun el feature que trabajes.
+    Para desarrollo basico de documentos, solo necesitas: PostgreSQL + PDFComposer + Backend + Frontend. Los demas servicios son opcionales segun el feature que trabajes.
 
 ## Verificar Instalacion
 
@@ -277,7 +238,6 @@ curl http://localhost:8000/health   # Backend
 curl http://localhost:8010/health   # BackOffice Backend
 curl http://localhost:8002/health   # PDFComposer
 curl http://localhost:8001/health   # Notary
-curl http://localhost:3000/health   # Gotenberg
 ```
 
 Respuesta esperada del Backend:

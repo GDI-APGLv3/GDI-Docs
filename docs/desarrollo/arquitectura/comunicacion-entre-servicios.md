@@ -16,17 +16,14 @@ El ecosistema GDI utiliza tres protocolos de comunicacion:
 |--------|---------|-----------|---------------|----------------|----------|
 | GDI-FRONTEND | GDI-Backend | REST | Auth0 JWT (Bearer) | 8000 | Public |
 | GDI-BackOffice-Front | GDI-BackOffice-Back | REST | Auth0 JWT (Bearer) | 8010 | Public |
-| GDI-Backend | GDI-PDFComposer | REST | API Key (`X-API-Key`) | 8002 | Railway internal |
-| GDI-Backend | GDI-Notary | REST | API Key (`X-API-Key`) | 8001 | Railway internal |
-| GDI-Backend | GDI-eMailService | REST | API Key (`X-API-Key`) | 8003 | Railway internal |
+| GDI-Backend | GDI-PDFComposer | REST | API Key (`X-API-Key`) | 8002 | Docker internal |
+| GDI-Backend | GDI-Notary | REST | API Key (`X-API-Key`) | 8001 | Docker internal |
 | GDI-Backend | Cloudflare R2 | S3 API | Access Key + Secret Key | 443 | External (HTTPS) |
-| GDI-AgenteLANG | GDI-Backend | REST | JWT / Internal API Key | 8000 | Railway internal |
+| GDI-AgenteLANG | GDI-Backend | REST | JWT / Internal API Key | 8000 | Docker internal |
 | GDI-AgenteLANG | OpenRouter | REST | API Key (Bearer) | 443 | External (HTTPS) |
-| GDI-AgenteLANG | PostgreSQL | TCP | Connection string | 5432 | Railway internal |
-| GDI-PDFComposer | Gotenberg | REST | Sin auth (internal) | 3000 | Railway internal |
+| GDI-AgenteLANG | PostgreSQL | TCP | Connection string | 5432 | Docker internal |
 | Cliente MCP | GDI-MCP Server | MCP (JSON-RPC) | OAuth 2.0 (Auth0 JWT) | 8005 | Public |
-| GDI-BackOffice-Back | PostgreSQL | TCP | Connection string | 5432 | Railway internal |
-| Dashboard GDI | PostgreSQL | TCP | Connection string | 5432 | Railway internal |
+| GDI-BackOffice-Back | PostgreSQL | TCP | Connection string | 5432 | Docker internal |
 
 ## Autenticacion Inter-Servicio
 
@@ -42,7 +39,7 @@ Backend → Auth0 JWKS (validacion)
 
 ### API Key (Backend a Microservicios)
 
-La comunicacion entre el Backend y los microservicios (PDFComposer, Notary, eMailService) usa API Keys simples en el header `X-API-Key`.
+La comunicacion entre el Backend y los microservicios (PDFComposer, Notary) usa API Keys simples en el header `X-API-Key`.
 
 ```python
 # Ejemplo: Backend llamando a PDFComposer
@@ -81,46 +78,43 @@ curl -H "X-API-Key: sk-gdi-xxx" \
      https://mcp.tu-dominio.com/api/v1/cases/search
 ```
 
-## Railway Internal URLs vs Public URLs
+## Comunicacion Interna (Docker Networking)
 
 ### URLs Internas (servicio a servicio)
 
-Los servicios dentro del mismo proyecto Railway se comunican via URLs internas. Estas no pasan por internet, lo que reduce latencia y aumenta seguridad.
+Los servicios dentro de la misma red Docker Compose se comunican usando el nombre del servicio como hostname. Estas no pasan por internet, lo que reduce latencia y aumenta seguridad.
 
 ```
-http://{servicio}.railway.internal:{puerto}
+http://<nombre-servicio>:<puerto>
 ```
 
 **Ejemplos:**
 
 ```bash
 # Backend → PDFComposer
-PDFCOMPOSER_URL=http://pdfcomposer-svc.railway.internal:8002
+PDFCOMPOSER_URL=http://pdfcomposer:8002
 
 # Backend → Notary
-NOTARY_URL=http://notary-svc.railway.internal:8001
+NOTARY_URL=http://notary:8001
 
-# PDFComposer → Gotenberg
-GOTENBERG_URL=http://gotenberg.railway.internal:3000
-
-# Dashboard Frontend → Dashboard Backend
-BACKEND_URL=http://dashboard-backend.railway.internal:8000
+# AgenteLANG → Backend
+GDI_BACKEND_URL=http://backend:8000
 ```
 
-!!! tip "Ventajas de Internal Networking"
+!!! tip "Ventajas de Docker Networking"
     - Sin exposicion a internet
     - Menor latencia (misma red)
     - Sin costos de bandwidth externo
-    - Nombres DNS estables
+    - Nombres DNS estables (nombre del servicio en Docker Compose)
 
 ### URLs Publicas (usuario a servicio)
 
-Los frontends y clientes externos acceden via URLs publicas de Railway:
+Los frontends y clientes externos acceden via URLs publicas configuradas con reverse proxy o dominio:
 
 ```bash
 # Frontends (navegador del usuario)
-https://mi-frontend.up.railway.app     # GDI-FRONTEND
-https://mi-backoffice.up.railway.app   # GDI-BackOffice-Front
+https://tu-frontend.tu-dominio.com     # GDI-FRONTEND
+https://tu-backoffice.tu-dominio.com   # GDI-BackOffice-Front
 
 # APIs publicas
 https://mcp.tu-dominio.com/mcp            # MCP Server (dominio custom)
@@ -140,8 +134,8 @@ AUTH0_DOMAIN=tu-tenant.us.auth0.com
 # OpenRouter (modelos IA)
 OPENROUTER_API_KEY=sk-or-...
 
-# Mailgun (emails) - via SMTP o API
-SMTP_HOST=smtp.mailgun.org
+# Resend (emails)
+# Integrado en BackOffice-Back via Resend API
 ```
 
 ## Patrones de Comunicacion
@@ -188,6 +182,5 @@ Notary → Backend: 200 (PDF firmado)
 | Frontend a Backend | 30s | Request HTTP estandar |
 | Backend a PDFComposer | 60s | Generacion PDF puede ser lenta |
 | Backend a Notary | 30s | Firma es rapida |
-| PDFComposer a Gotenberg | 30s | Conversion HTML a PDF |
 | Backend a R2 | 30s | Upload/download de archivos |
 | AgenteLANG a OpenRouter | 60s | Respuesta de LLM |

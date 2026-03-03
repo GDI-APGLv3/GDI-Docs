@@ -27,15 +27,14 @@ Se utiliza para almacenar:
 
 ## Credenciales
 
-Las credenciales de R2 se almacenan como variables de entorno en Railway. Nunca en codigo fuente.
+Las credenciales de R2 se almacenan como variables de entorno. Nunca en codigo fuente.
 
 | Variable | Descripcion | Donde se usa |
 |----------|-------------|--------------|
 | `CF_R2_ENDPOINT` | Endpoint S3-compatible | GDI-Backend |
 | `CF_R2_ACCESS_KEY_ID` | Access Key ID | GDI-Backend |
 | `CF_R2_SECRET_ACCESS_KEY` | Secret Access Key | GDI-Backend |
-| `CF_R2_BUCKET_OFICIAL` | Nombre del bucket oficial | GDI-Backend |
-| `CF_R2_BUCKET_TOSIGN` | Nombre del bucket tosign | GDI-Backend |
+| `CF_R2_SIGN_EXPIRATION` | Expiracion presigned URLs (seg) | GDI-Backend |
 | `CF_R2_SIGN_EXPIRATION` | Expiracion de presigned URLs (segundos) | GDI-Backend |
 
 **Formato del endpoint:**
@@ -45,7 +44,7 @@ https://<ACCOUNT_ID>.r2.cloudflarestorage.com
 ```
 
 !!! danger "Seguridad"
-    Las credenciales R2 solo deben estar en variables de entorno de Railway. Nunca commitear credenciales al repositorio.
+    Las credenciales R2 solo deben estar en variables de entorno del servidor. Nunca commitear credenciales al repositorio.
 
 ---
 
@@ -220,8 +219,8 @@ Para que los frontends puedan descargar PDFs directamente desde R2 (via presigne
 [
   {
     "AllowedOrigins": [
-      "https://mi-frontend.up.railway.app",
-      "https://mi-backoffice.up.railway.app",
+      "https://tu-frontend.tu-dominio.com",
+      "https://tu-backoffice.tu-dominio.com",
       "http://localhost:3003",
       "http://localhost:3013"
     ],

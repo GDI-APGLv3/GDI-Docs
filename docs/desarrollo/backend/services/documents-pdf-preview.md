@@ -166,7 +166,7 @@ class AutoSaveHandler:
 
 | Variable | Descripcion |
 |----------|-------------|
-| `PDFCOMPOSER_URL` | URL del microservicio (Railway internal) |
+| `PDFCOMPOSER_URL` | URL del microservicio (Docker internal) |
 | `PDFCOMPOSER_API_KEY` | API Key para autenticacion |
 
 **Timeout:** 90 segundos (generacion de PDF puede ser lenta).

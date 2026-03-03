@@ -1,33 +1,8 @@
-# Railway
+# Docker
 
-## Proyecto
+## Vision General
 
-| Campo | Valor |
-|-------|-------|
-| **Team** | GDI |
-| **Project** | GDI_v0 |
-| **Project ID** | `0455edb5-2fc1-44c8-8e36-991d95c53ff9` |
-| **Region** | US West |
-
----
-
-## Ambientes
-
-Railway soporta multiples ambientes dentro del mismo proyecto. GDI tiene dos:
-
-| Ambiente | Nombre Interno | Host BD | Uso |
-|----------|---------------|---------|-----|
-| **dev** | prod-railway | `prod-host.proxy.rlwy.net` | Demo en vivo -- NO TOCAR |
-| **dev-test** | dev-railway | `dev-host.proxy.rlwy.net:5432` | Desarrollo y pruebas |
-
-!!! danger "Ambiente de demo"
-    El ambiente **dev (prod-railway)** es la demo para stakeholders. No hacer cambios de variables, deployments experimentales ni migraciones de BD en este ambiente.
-
-```bash
-# Cambiar entre ambientes via CLI
-railway environment use dev
-railway environment use dev-test
-```
+Cada servicio de GDI se empaqueta como imagen Docker. Las organizaciones despliegan el ecosistema completo usando Docker Compose, que orquesta todos los contenedores, redes y volumenes necesarios.
 
 ---
 
@@ -39,38 +14,32 @@ railway environment use dev-test
 |-------|-------|
 | **Stack** | Python 3.12, FastAPI, Gunicorn + Uvicorn |
 | **Puerto** | 8000 |
-| **Tipo** | Publico (URL externa) |
-| **Root Directory** | `Backend/` |
+| **Tipo** | Publico (expuesto al exterior) |
+| **Dockerfile** | Si |
 | **Start Command** | `gunicorn main:app --workers 8 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --timeout 120 --keep-alive 5 --max-requests 1000 --max-requests-jitter 50 --preload` |
 
 **Variables de entorno:**
 
 | Variable | Descripcion | Ejemplo |
 |----------|-------------|---------|
-| `DB_HOST` | Host PostgreSQL | `prod-host.proxy.rlwy.net` |
-| `DB_PORT` | Puerto PostgreSQL | `33832` |
-| `DB_USER` | Usuario BD | `postgres` |
-| `DB_PASSWORD` | Password BD | `<RAILWAY_SECRET>` |
-| `DB_NAME` | Nombre de la base de datos | `GDI-MVP` |
+| `DATABASE_URL` | Connection string PostgreSQL | `postgresql://user:pass@postgres:5432/railway` |
 | `TESTING_MODE` | Modo testing (header X-User-ID) | `true` / `false` |
 | `AUTH0_DOMAIN` | Dominio Auth0 | `tu-tenant.us.auth0.com` |
 | `AUTH0_AUDIENCE` | Audience JWT | `https://api.tu-dominio.com` |
-| `PDFCOMPOSER_URL` | URL PDFComposer (internal) | `http://pdfcomposer-svc.railway.internal:8002` |
-| `PDFCOMPOSER_API_KEY` | API Key PDFComposer | `<SECRET>` |
-| `NOTARY_URL` | URL Notary (internal) | `http://notary-svc.railway.internal:8001` |
-| `NOTARY_API_KEY` | API Key Notary | `<SECRET>` |
-| `EMAILSERVICE_URL` | URL eMailService (internal) | `http://email-svc.railway.internal:8003` |
-| `CF_R2_ENDPOINT` | Endpoint Cloudflare R2 | `https://<ACCOUNT_ID>.r2.cloudflarestorage.com` |
-| `CF_R2_ACCESS_KEY_ID` | R2 Access Key | `<SECRET>` |
-| `CF_R2_SECRET_ACCESS_KEY` | R2 Secret Key | `<SECRET>` |
-| `CF_R2_BUCKET_OFICIAL` | Bucket PDFs oficiales | `tenant-test-oficial` |
-| `CF_R2_BUCKET_TOSIGN` | Bucket PDFs pendientes | `tenant-test-tosign` |
+| `PDFCOMPOSER_URL` | URL PDFComposer (internal) | `http://pdfcomposer:8002` |
+| `PDFCOMPOSER_API_KEY` | API Key PDFComposer | `(secreto)` |
+| `NOTARY_URL` | URL Notary (internal) | `http://notary:8001` |
+| `NOTARY_API_KEY` | API Key Notary | `(secreto)` |
+| `CF_R2_ENDPOINT` | Endpoint Cloudflare R2 | `https://ACCOUNT_ID.r2.cloudflarestorage.com` |
+| `CF_R2_ACCESS_KEY_ID` | R2 Access Key | `(secreto)` |
+| `CF_R2_SECRET_ACCESS_KEY` | R2 Secret Key | `(secreto)` |
 | `CF_R2_SIGN_EXPIRATION` | Expiracion URLs firmadas (seg) | `600` |
+| `FRONTEND_URL` | URL del frontend (CORS) | `https://tu-frontend.tu-dominio.com` |
 
 **Health check:**
 
 ```bash
-curl https://<BACKEND_URL>/health
+curl http://localhost:8000/health
 # {"status": "healthy", "database": "connected"}
 ```
 
@@ -82,7 +51,7 @@ curl https://<BACKEND_URL>/health
 |-------|-------|
 | **Stack** | Next.js 15, React 18, TypeScript 5, Tailwind |
 | **Puerto** | 3003 |
-| **Tipo** | Publico (URL externa) |
+| **Tipo** | Publico (expuesto al exterior) |
 
 **Variables de entorno:**
 
@@ -103,7 +72,7 @@ curl https://<BACKEND_URL>/health
 |-------|-------|
 | **Stack** | Next.js 15, React 18, TypeScript 5, Tailwind |
 | **Puerto** | 3013 |
-| **Tipo** | Publico (URL externa) |
+| **Tipo** | Publico (expuesto al exterior) |
 
 **Variables de entorno:** Identicas a GDI-FRONTEND pero apuntando al BackOffice-Back.
 
@@ -115,7 +84,7 @@ curl https://<BACKEND_URL>/health
 |-------|-------|
 | **Stack** | Python 3.12, FastAPI, psycopg2 |
 | **Puerto** | 8010 |
-| **Tipo** | Publico (URL externa) |
+| **Tipo** | Publico (expuesto al exterior) |
 
 **Variables de entorno:**
 
@@ -137,9 +106,9 @@ curl https://<BACKEND_URL>/health
 
 | Campo | Valor |
 |-------|-------|
-| **Stack** | Python 3.11, FastAPI, Jinja2, Gunicorn |
+| **Stack** | Python 3.11, FastAPI, Jinja2, WeasyPrint, PyMuPDF |
 | **Puerto** | 8002 |
-| **Tipo** | Interno (`*.railway.internal`) |
+| **Tipo** | Interno (solo accesible dentro de la red Docker) |
 | **Dockerfile** | Si |
 | **Start Command** | `gunicorn main:app -c gunicorn_conf.py` |
 
@@ -148,14 +117,13 @@ curl https://<BACKEND_URL>/health
 | Variable | Descripcion |
 |----------|-------------|
 | `API_KEY` | API Key para autenticacion |
-| `GOTENBERG_URL` | URL Gotenberg (internal) |
 | `GUNICORN_WORKERS` | Numero de workers (default 4) |
 
 **Health check:**
 
 ```bash
-# Solo desde dentro de Railway (internal)
-curl http://pdfcomposer-svc.railway.internal:8002/health
+# Solo desde dentro de la red Docker
+curl http://pdfcomposer:8002/health
 ```
 
 ---
@@ -166,7 +134,7 @@ curl http://pdfcomposer-svc.railway.internal:8002/health
 |-------|-------|
 | **Stack** | Python 3.11, FastAPI, pyHanko, PyMuPDF, ReportLab |
 | **Puerto** | 8001 |
-| **Tipo** | Interno (`*.railway.internal`) |
+| **Tipo** | Interno (solo accesible dentro de la red Docker) |
 | **Dockerfile** | Si |
 | **Start Command** | `gunicorn app.main:app -c gunicorn_conf.py` |
 
@@ -185,32 +153,9 @@ curl http://pdfcomposer-svc.railway.internal:8002/health
 **Health check:**
 
 ```bash
-curl http://notary-svc.railway.internal:8001/health
+curl http://notary:8001/health
 # {"status": "healthy", "signature_system": "pades", ...}
 ```
-
----
-
-### GDI-eMailService (Emails)
-
-| Campo | Valor |
-|-------|-------|
-| **Stack** | Python 3.11+, FastAPI, Jinja2 |
-| **Puerto** | 8003 |
-| **Tipo** | Interno (`*.railway.internal`) |
-| **Start Command** | `uvicorn main:app --host 0.0.0.0 --port $PORT` |
-
-**Variables de entorno:**
-
-| Variable | Descripcion |
-|----------|-------------|
-| `API_KEY` | API Key para autenticacion |
-| `SMTP_HOST` | Host SMTP |
-| `SMTP_PORT` | Puerto SMTP (587 TLS) |
-| `SMTP_USER` | Usuario SMTP |
-| `SMTP_PASSWORD` | Password SMTP |
-| `FROM_EMAIL` | Email de origen |
-| `FROM_NAME` | Nombre de origen |
 
 ---
 
@@ -220,7 +165,7 @@ curl http://notary-svc.railway.internal:8001/health
 |-------|-------|
 | **Stack** | Python 3.11, FastAPI, LangGraph, pgvector |
 | **Puerto** | 8004 |
-| **Tipo** | Interno (`*.railway.internal`) |
+| **Tipo** | Interno (solo accesible dentro de la red Docker) |
 | **Dockerfile** | Si |
 | **Start Command** | `uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8004}` |
 
@@ -243,34 +188,20 @@ curl http://notary-svc.railway.internal:8001/health
 
 ---
 
-### Gotenberg (Motor PDF)
-
-| Campo | Valor |
-|-------|-------|
-| **Stack** | Go, Chromium headless |
-| **Puerto** | 3000 |
-| **Tipo** | Interno (`*.railway.internal`) |
-| **Imagen** | Railway managed |
-
-No requiere variables de entorno personalizadas.
-
----
-
 ### PostgreSQL
 
 | Campo | Valor |
 |-------|-------|
 | **Version** | 17+ con pgvector |
-| **Tipo** | Railway Managed |
-| **Puerto interno** | 5432 |
-| **Puerto proxy (dev)** | 33832 |
-| **Puerto proxy (dev-test)** | 5432 |
+| **Tipo** | Interno (solo accesible dentro de la red Docker) |
+| **Puerto** | 5432 |
+| **Imagen** | `pgvector/pgvector:pg17` |
 
 ---
 
-## Internal URLs vs Public URLs
+## Networking (Comunicacion Interna)
 
-Railway permite comunicacion entre servicios del mismo proyecto sin pasar por internet:
+Docker Compose crea una red interna donde los servicios se comunican por nombre de servicio. Esto es mas rapido y seguro que exponer puertos al exterior.
 
 ```mermaid
 graph LR
@@ -278,101 +209,185 @@ graph LR
         Client["Cliente externo"]
     end
 
-    subgraph Railway["Proyecto Railway"]
+    subgraph Docker["Docker Compose"]
         BE["GDI-Backend"]
         PDF["PDFComposer"]
         NOT["Notary"]
     end
 
-    Client -->|"https://mi-backend.up.railway.app"| BE
-    BE -->|"http://pdfcomposer-svc.railway.internal:8002"| PDF
-    BE -->|"http://notary-svc.railway.internal:8001"| NOT
+    Client -->|"https://tu-backend.tu-dominio.com"| BE
+    BE -->|"http://pdfcomposer:8002"| PDF
+    BE -->|"http://notary:8001"| NOT
 ```
 
-### Formato de Internal URLs
+### URLs Internas (Docker Networking)
 
 ```
-http://<service-name>.railway.internal:<port>
+http://<nombre-servicio>:<puerto>
 ```
 
-| Servicio | Internal URL |
+| Servicio | URL Interna |
 |----------|-------------|
-| GDI-PDFComposer | `http://pdfcomposer-svc.railway.internal:8002` |
-| GDI-Notary | `http://notary-svc.railway.internal:8001` |
-| GDI-eMailService | `http://email-svc.railway.internal:8003` |
-| GDI-AgenteLANG | `http://agente-svc.railway.internal:8004` |
-| Gotenberg | `http://gotenberg.railway.internal:3000` |
-| PostgreSQL | `postgres.railway.internal:5432` |
+| GDI-Backend | `http://backend:8000` |
+| GDI-PDFComposer | `http://pdfcomposer:8002` |
+| GDI-Notary | `http://notary:8001` |
+| GDI-AgenteLANG | `http://agentelang:8004` |
+| PostgreSQL | `postgres:5432` |
 
-!!! tip "Ventajas de Internal URLs"
-    - Sin latencia de internet (comunicacion directa dentro del cluster)
+!!! tip "Ventajas de Docker Networking"
+    - Sin exposicion a internet (comunicacion directa dentro de la red Docker)
     - Sin costo de egress
     - No exponen servicios internos a internet
+    - Nombres DNS estables (el nombre del servicio en Docker Compose)
 
 !!! warning "Limitaciones"
-    - Solo funcionan entre servicios del mismo proyecto Railway
-    - No accesibles desde maquinas locales (usar public URLs para desarrollo)
+    - Solo funcionan entre servicios de la misma red Docker Compose
+    - No accesibles desde maquinas fuera del host (usar URLs publicas para acceso externo)
     - Protocolo `http://` (no https) porque el trafico es interno
 
 ---
 
-## Railway CLI
+## Docker Compose
 
-### Instalacion
+### Archivo de ejemplo
 
-```bash
-npm i -g @railway/cli
+```yaml
+# docker-compose.yml
+version: "3.8"
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: railway
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./GDI-Backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file: ./env/backend.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  backoffice-back:
+    build:
+      context: ./GDI-BackOffice-Back
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8010:8010"
+    env_file: ./env/backoffice-back.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  pdfcomposer:
+    build:
+      context: ./GDI-PDFComposer
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - "8002"
+    env_file: ./env/pdfcomposer.env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  notary:
+    build:
+      context: ./GDI-Notary
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - "8001"
+    env_file: ./env/notary.env
+    volumes:
+      - certs:/app/certs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  agentelang:
+    build:
+      context: ./GDI-AgenteLANG
+      dockerfile: Dockerfile
+    restart: always
+    expose:
+      - "8004"
+    env_file: ./env/agentelang.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./GDI-FRONTEND
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3003:3003"
+    env_file: ./env/frontend.env
+    depends_on:
+      - backend
+
+  backoffice-front:
+    build:
+      context: ./GDI-BackOffice-Front
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3013:3013"
+    env_file: ./env/backoffice-front.env
+    depends_on:
+      - backoffice-back
+
+volumes:
+  pgdata:
+  certs:
 ```
 
-### Autenticacion
+### Archivos de entorno
 
-```bash
-railway login
-# Abre navegador para autenticar
+Crear un directorio `env/` con un archivo `.env` por servicio:
 
-railway login --browserless
-# Genera token para CI/CD (sin navegador)
+```
+env/
+├── backend.env
+├── backoffice-back.env
+├── pdfcomposer.env
+├── notary.env
+├── agentelang.env
+├── frontend.env
+└── backoffice-front.env
 ```
 
-### Comandos Frecuentes
-
-```bash
-# Vincular directorio local a proyecto Railway
-railway link
-
-# Seleccionar servicio activo
-railway service
-
-# Ver variables de entorno del servicio
-railway variables
-
-# Configurar variable
-railway variables --set KEY="value"
-
-# Deploy directo
-railway up --detach
-
-# Ver logs en tiempo real
-railway logs --follow
-
-# Ver logs de build
-railway logs --build
-
-# Cambiar ambiente
-railway environment use dev-test
-
-# Redeploy sin cambios de codigo
-railway redeploy
-
-# Ver dominio publico
-railway domain
-
-# SSH al contenedor
-railway ssh
-
-# Ejecutar comando con variables de Railway
-railway run python main.py
-```
+!!! danger "Seguridad"
+    Nunca commitear los archivos `.env` al repositorio. Agregarlos a `.gitignore`.
 
 ---
 
@@ -386,63 +401,91 @@ Cada servicio expone un endpoint `/health` que no requiere autenticacion:
 | GDI-BackOffice-Back | `GET /health` | `{"status": "ok"}` |
 | GDI-PDFComposer | `GET /health` | `{"status": "ok"}` |
 | GDI-Notary | `GET /health` | `{"status": "healthy", "signature_system": "pades"}` |
-| GDI-eMailService | `GET /health` | `{"status": "ok"}` |
 | GDI-AgenteLANG | `GET /health` | `{"status": "ok", "database": "ok", "ai_worker": "running"}` |
 | GDI-AgenteLANG | `GET /health/detailed` | Health detallado con stats del worker |
 
 ---
 
-## Deployment
+## Comandos Utiles
 
-### Auto-Deploy (Recomendado)
-
-Railway detecta automaticamente los pushes a la rama principal de cada repositorio y despliega el servicio:
+### Levantar todo el ecosistema
 
 ```bash
-git add .
-git commit -m "feat: nueva funcionalidad"
-git push origin main
-# Railway inicia build + deploy automaticamente
+docker compose up -d
 ```
 
-### Deploy Manual via CLI
+### Ver logs
 
 ```bash
-# Desde el directorio del servicio
-railway link
-railway service  # Seleccionar servicio
-railway up --detach
+# Todos los servicios
+docker compose logs -f
+
+# Un servicio especifico
+docker compose logs -f backend
+
+# Ultimas 100 lineas
+docker compose logs --tail 100 backend
 ```
 
-### Verificacion Post-Deploy
+### Reiniciar un servicio
 
 ```bash
-# Ver logs
-railway logs --follow
+docker compose restart backend
+```
 
-# Verificar health
-curl https://<SERVICE_URL>/health
+### Reconstruir un servicio (despues de cambios de codigo)
 
-# Ver status del deploy
-railway status
+```bash
+docker compose up -d --build backend
+```
+
+### Detener todo
+
+```bash
+docker compose down
+```
+
+### Ver estado de los servicios
+
+```bash
+docker compose ps
+```
+
+### Ejecutar comando dentro de un contenedor
+
+```bash
+docker compose exec backend python -c "import main; print('OK')"
+```
+
+---
+
+## Actualizacion
+
+Para actualizar los servicios con nuevas versiones:
+
+```bash
+# Si usas imagenes de un registry
+docker compose pull
+docker compose up -d
+
+# Si construyes localmente
+git pull  # en cada repositorio
+docker compose up -d --build
 ```
 
 ---
 
 ## Rollback
 
-### Via Dashboard
-
-1. Ir al servicio en Railway Dashboard
-2. Tab **Deployments**
-3. Encontrar deployment anterior exitoso
-4. Click en menu (...) y seleccionar **Redeploy**
-
-### Via CLI
+Si una actualizacion causa problemas, volver a la version anterior:
 
 ```bash
-railway redeploy
+# Reconstruir con el codigo anterior
+git checkout <commit-anterior>  # en el repo del servicio
+docker compose up -d --build <servicio>
 ```
+
+Si usas imagenes con tags de un registry, simplemente cambiar el tag en `docker-compose.yml` y re-levantar.
 
 ---
 
@@ -451,45 +494,46 @@ railway redeploy
 ### Build Failed
 
 ```bash
-# Verificar que exista Procfile o Dockerfile
-# Verificar requirements.txt (Python) o package.json (Node)
 # Ver logs de build
-railway logs --build
+docker compose build --no-cache <servicio>
+
+# Verificar que exista Dockerfile
+# Verificar requirements.txt (Python) o package.json (Node)
 ```
 
 ### Service Crashed
 
 ```bash
 # Ver logs detallados
-railway logs --tail 100
+docker compose logs --tail 100 <servicio>
 
-# Verificar variables de entorno
-railway variables
+# Ver variables de entorno
+docker compose exec <servicio> env
 
-# SSH para debug
-railway ssh
+# Reiniciar
+docker compose restart <servicio>
 ```
 
 ### Cannot Connect to Database
 
 ```bash
-# Verificar DATABASE_URL o DB_* variables
-railway variables | grep DB_
+# Verificar que PostgreSQL este corriendo
+docker compose ps postgres
 
-# Test conexion manual
-railway connect PostgreSQL
+# Verificar conectividad
+docker compose exec backend python -c "import psycopg2; print('OK')"
+
+# Verificar variables de entorno
+docker compose exec backend env | grep DB_
 ```
 
-### Internal URL No Responde
+### Servicio Interno No Responde
 
 ```bash
-# Verificar que el servicio destino este corriendo
-railway status
+# Verificar que el servicio este corriendo
+docker compose ps
 
-# Verificar nombre exacto del servicio
-railway service
-# El nombre debe coincidir con la internal URL
-
-# Temporalmente cambiar a public URL para descartar problemas de red
-railway variables --set PDFCOMPOSER_URL="https://mi-pdfcomposer.up.railway.app"
+# Verificar conectividad desde otro contenedor
+docker compose exec backend curl http://pdfcomposer:8002/health
+docker compose exec backend curl http://notary:8001/health
 ```

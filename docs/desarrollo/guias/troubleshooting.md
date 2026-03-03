@@ -56,13 +56,16 @@ allowed_origins = (
 )
 ```
 
-### Produccion (Railway)
+### Produccion (Docker)
 
-Configurar la variable de entorno `FRONTEND_URL` en Railway con la URL del frontend:
+Configurar la variable de entorno `FRONTEND_URL` con la URL del frontend:
 
 ```bash
-railway variables --set FRONTEND_URL="https://mi-frontend.up.railway.app"
-railway redeploy
+# En el archivo .env del Backend o en docker-compose.yml
+FRONTEND_URL=https://tu-frontend.tu-dominio.com
+
+# Reiniciar el servicio
+docker compose restart backend
 ```
 
 Ver [Middleware](../backend/middleware.md) para la configuracion completa de CORS.
@@ -100,8 +103,8 @@ curl -H "X-User-ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890" \
 ### En produccion
 
 ```bash
-# Verificar variables Auth0 en Railway
-railway variables | grep AUTH0
+# Verificar variables Auth0 en Docker
+docker compose exec backend env | grep AUTH0
 
 # Deben coincidir:
 # AUTH0_DOMAIN=tu-tenant.us.auth0.com
@@ -111,54 +114,6 @@ railway variables | grep AUTH0
 Si el token expira rapidamente, verificar la configuracion de token lifetime en Auth0 Dashboard > APIs > Settings.
 
 Ver [Autenticacion](../backend/auth.md) para el flujo completo de Auth0.
-
----
-
-## Gotenberg Connection Refused
-
-**Sintomas**: Error al generar PDFs: `ConnectionError: Cannot connect to Gotenberg` o timeout en `POST /documents/{id}/start-signing-process`.
-
-**Causa**: Gotenberg no esta corriendo o la URL es incorrecta.
-
-**Solucion**:
-
-### Desarrollo local
-
-Gotenberg se ejecuta como contenedor Docker:
-
-```bash
-# Verificar si esta corriendo
-docker ps | grep gotenberg
-
-# Si no esta corriendo, iniciarlo
-docker run --rm -p 3000:3000 gotenberg/gotenberg:8
-
-# Verificar health
-curl http://localhost:3000/health
-```
-
-Asegurar que PDFComposer apunta a la URL correcta:
-
-```bash
-# .env de GDI-PDFComposer
-GOTENBERG_URL=http://localhost:3000
-```
-
-### En Railway
-
-```bash
-# Verificar que el servicio Gotenberg esta corriendo
-railway status
-
-# Verificar la URL interna
-railway variables --service pdfcomposerv2 | grep GOTENBERG_URL
-# Debe ser: http://gotenberg.railway.internal:3000
-```
-
-!!! warning "Internal URLs"
-    Las URLs internas de Railway (`*.railway.internal`) solo funcionan entre servicios del mismo proyecto. Desde tu maquina local, usa `http://localhost:3000`.
-
-Ver [Gotenberg](../pdfcomposer/gotenberg.md) y [Railway](../deploy/railway.md#internal-urls-vs-public-urls).
 
 ---
 
@@ -186,8 +141,8 @@ SELECT bucket_oficial, bucket_tosign FROM "200_muni".settings;
 # Desarrollo local:
 cat .env | grep CF_R2
 
-# Railway:
-railway variables | grep CF_R2
+# Docker:
+docker compose exec backend env | grep CF_R2
 
 # Variables necesarias:
 # CF_R2_ENDPOINT=https://ACCOUNT_ID.r2.cloudflarestorage.com
@@ -293,16 +248,16 @@ Ver [Multi-Tenant](../arquitectura/multi-tenant.md) y [Database](../backend/data
 
 ---
 
-## Railway Deploy Failed
+## Docker Deploy Failed
 
-**Sintomas**: El deploy en Railway falla durante build o startup.
+**Sintomas**: El deploy falla durante build o startup del contenedor.
 
 ### Build failed
 
 **Diagnostico**:
 
 ```bash
-railway logs --build
+docker compose build --no-cache <servicio>
 ```
 
 **Causas comunes**:
@@ -310,7 +265,7 @@ railway logs --build
 | Error | Causa | Solucion |
 |-------|-------|----------|
 | `ModuleNotFoundError` | Dependencia no esta en requirements.txt | `pip freeze > requirements.txt` |
-| `Python version` | Version incompatible | Verificar `runtime.txt` o Dockerfile |
+| `Python version` | Version incompatible | Verificar Dockerfile |
 | `Node version` | Version incompatible | Verificar `package.json` engines |
 | `Dockerfile error` | Dockerfile invalido | Verificar sintaxis |
 
@@ -319,7 +274,7 @@ railway logs --build
 **Diagnostico**:
 
 ```bash
-railway logs --tail 100
+docker compose logs --tail 100 <servicio>
 ```
 
 **Causas comunes**:
@@ -327,24 +282,25 @@ railway logs --tail 100
 | Error | Causa | Solucion |
 |-------|-------|----------|
 | `PORT already in use` | Puerto hardcodeado | Usar `os.getenv("PORT")` |
-| `DATABASE_URL invalid` | Variable mal configurada | `railway variables` para verificar |
-| `Out of Memory` | Servicio consume mucha RAM | Aumentar limite en Railway Dashboard |
+| `DATABASE_URL invalid` | Variable mal configurada | `docker compose exec <servicio> env` para verificar |
+| `Out of Memory` | Servicio consume mucha RAM | Aumentar limite en docker-compose.yml |
 | `Import error` | Dependencia faltante | Verificar requirements.txt |
 
 **Solucion general**:
 
 ```bash
 # Ver variables de entorno
-railway variables
+docker compose exec <servicio> env
 
-# Forzar redeploy
-railway redeploy
+# Forzar rebuild y redeploy
+docker compose up -d --build <servicio>
 
-# Rollback al deploy anterior (via dashboard)
-# Railway Dashboard > Service > Deployments > Redeploy version anterior
+# Rollback: reconstruir con version anterior
+git checkout <commit-anterior>
+docker compose up -d --build <servicio>
 ```
 
-Ver [Railway](../deploy/railway.md) para la guia completa de deploy y rollback.
+Ver [Docker](../deploy/railway.md) para la guia completa de deploy y rollback.
 
 ---
 
@@ -369,12 +325,12 @@ curl http://localhost:8000/health
 # .env.local
 NEXT_PUBLIC_API_URL=http://localhost:8000
 
-# En produccion (Railway), verificar que la URL sea la publica
-NEXT_PUBLIC_API_URL=https://mi-backend.up.railway.app
+# En produccion, verificar que la URL sea la publica
+NEXT_PUBLIC_API_URL=https://tu-backend.tu-dominio.com
 ```
 
 !!! tip "Prefijo NEXT_PUBLIC_"
-    Las variables de entorno en Next.js que empiezan con `NEXT_PUBLIC_` son accesibles desde el navegador. Las demas solo desde el servidor. `NEXT_PUBLIC_API_URL` debe ser la URL **publica** del Backend, no la interna de Railway.
+    Las variables de entorno en Next.js que empiezan con `NEXT_PUBLIC_` son accesibles desde el navegador. Las demas solo desde el servidor. `NEXT_PUBLIC_API_URL` debe ser la URL **publica** del Backend, no la interna de Docker.
 
 ---
 
@@ -390,7 +346,7 @@ NEXT_PUBLIC_API_URL=https://mi-backend.up.railway.app
 
 ```bash
 # Verificar logs del Backend
-railway logs | grep FULLPAGE
+docker compose logs backend | grep FULLPAGE
 
 # Verificar que Notary responde
 curl http://localhost:8001/health
@@ -411,10 +367,9 @@ curl http://localhost:8001/health
 | TypeError schema_name | Agregar `=` en la llamada: `schema_name=schema_name` |
 | CORS | Verificar puerto o `FRONTEND_URL` |
 | JWT invalid | Activar `TESTING_MODE=true` en desarrollo |
-| Gotenberg down | `docker run --rm -p 3000:3000 gotenberg/gotenberg:8` |
 | R2 denied | Verificar variables `CF_R2_*` y buckets en settings |
 | Lock timeout | `SELECT pid FROM pg_locks WHERE classid = 888888` |
 | Schema not found | Verificar `information_schema.schemata` |
-| Deploy failed | `railway logs --build` o `railway logs --tail 100` |
+| Deploy failed | `docker compose build --no-cache` o `docker compose logs` |
 | Frontend fetch error | Verificar `NEXT_PUBLIC_API_URL` y health del Backend |
 | Firma FULLPAGE | Se resuelve automaticamente (agrega pagina en blanco) |

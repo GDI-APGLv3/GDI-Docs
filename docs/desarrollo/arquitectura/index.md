@@ -12,10 +12,8 @@ GDI Latam es un **Sistema de Gestion Documental Inteligente** para gobiernos y o
 | GDI-BackOffice-Back | Python 3.12, FastAPI, psycopg2 | 8010 | GDI-BackOffice-Back | API de administracion (49 endpoints + MCP) |
 | GDI-MCP Server | FastAPI, MCP Protocol, OAuth 2.0 | 8005 | GDI-Backend (api_gateway/) | Server MCP para IA externa |
 | GDI-AgenteLANG | FastAPI, LangGraph, OpenRouter, pgvector | 8004 | GDI-AgenteLANG | Agente IA con RAG y chat |
-| GDI-PDFComposer | FastAPI, Gotenberg 7, Jinja2 | 8002 | GDI-PDFComposer | Motor de generacion de PDFs |
+| GDI-PDFComposer | FastAPI, Jinja2, WeasyPrint, PyMuPDF | 8002 | GDI-PDFComposer | Motor de generacion de PDFs |
 | GDI-Notary | FastAPI, pyHanko, PyMuPDF, ReportLab | 8001 | GDI-Notary | Firma digital PAdES y visual |
-| GDI-eMailService | FastAPI, Jinja2, SMTP | 8003 | GDI-eMailService | Envio de emails transaccionales |
-| Dashboard GDI | Streamlit + FastAPI | 8501/8000 | Dashboard GDI | Explorador de base de datos |
 
 ## Principios Arquitectonicos
 
@@ -25,7 +23,7 @@ Cada capa del sistema tiene una responsabilidad clara e inviolable:
 
 - **Frontends**: Solo interfaz de usuario. Sin logica de negocio.
 - **Backends**: Toda la logica de negocio, validaciones y orquestacion.
-- **Microservicios**: Funciones atomicas y stateless (generar PDF, firmar, enviar email).
+- **Microservicios**: Funciones atomicas y stateless (generar PDF, firmar).
 - **Base de datos**: PostgreSQL como fuente de verdad, con pgvector para busqueda semantica.
 
 ### Multi-tenant por schema
@@ -47,7 +45,7 @@ PostgreSQL
 
 ### Microservicios stateless
 
-Los microservicios (PDFComposer, Notary, eMailService) no mantienen estado propio. Reciben un request, procesan y responden. Esto permite escalar horizontalmente sin complejidad.
+Los microservicios (PDFComposer, Notary) no mantienen estado propio. Reciben un request, procesan y responden. Esto permite escalar horizontalmente sin complejidad.
 
 La unica excepcion parcial es **GDI-AgenteLANG**, que mantiene un AIWorker background para procesamiento asincrono de resumenes, embeddings y transcripciones.
 
@@ -69,9 +67,9 @@ Todos los servicios se comunican via HTTP REST. No se usan colas de mensajes, gR
 - **Embeddings**: pgvector en PostgreSQL para busqueda semantica RAG.
 - **Imagenes de config**: Cloudflare R2 (logos, isologos) gestionados por BackOffice.
 
-### Deploy en Railway
+### Deploy con Docker
 
-Todos los servicios se despliegan en Railway como PaaS. Cada servicio tiene su propio deployment con auto-deploy desde GitHub al hacer push a `main`. La comunicacion interna entre servicios usa Railway internal URLs para menor latencia y mayor seguridad.
+Cada servicio se empaqueta como imagen Docker. Las organizaciones despliegan el ecosistema completo con Docker Compose. La comunicacion interna entre servicios usa la red Docker para menor latencia y mayor seguridad.
 
 ## Repositorios
 
@@ -86,9 +84,7 @@ mi-proyecto/          # Directorio raiz (NO es repo git)
 ├── GDI-AgenteLANG/    # Agente IA (FastAPI :8004)
 ├── GDI-PDFComposer/   # Genera PDFs (FastAPI :8002)
 ├── GDI-Notary/        # Firma digital (FastAPI :8001)
-├── GDI-eMailService/  # Emails (FastAPI :8003)
 ├── GDI-BD/            # Scripts SQL de BD
-├── Dashboard GDI/     # Explorador DB (Streamlit)
 └── .claude/           # Documentacion interna y agentes
 ```
 

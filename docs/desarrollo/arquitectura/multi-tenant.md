@@ -5,7 +5,7 @@
 GDI Latam usa una estrategia de **schema-per-tenant** en PostgreSQL. Cada organizacion tiene su propio schema de base de datos, lo que garantiza aislamiento completo de datos sin necesidad de bases de datos separadas.
 
 ```
-PostgreSQL (Railway)
+PostgreSQL
 │
 ├── public                    # Tablas globales (compartidas)
 │   ├── roles                 # Roles del sistema

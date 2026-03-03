@@ -75,7 +75,7 @@ async def start_document_signing_process(
 |----------|---------|
 | PDFComposer | Genera PDF final sin marca de agua |
 | R2 tosign | Almacena PDF para proceso de firma |
-| eMailService | Invita usuarios inactivos (estado=2) |
+| Resend (email) | Invita usuarios inactivos (estado=2) |
 | Resume trigger | Genera resumen IA del contenido |
 
 ---

@@ -16,7 +16,7 @@ GDI-FRONTEND es la aplicacion web para usuarios finales del Sistema de Gestion D
 | Editor Rich Text | React Quill | 2.0.0 |
 | Command Palette | cmdk | 1.1.1 |
 | Autenticacion | Auth0 via @auth0/nextjs-auth0 | 4.14.0 |
-| Deploy | Railway | - |
+| Deploy | Docker | - |
 | Puerto local | 3003 | - |
 
 ## Funcionalidades Principales

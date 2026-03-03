@@ -1,5 +1,8 @@
 # Endpoints
 
+!!! tip "Endpoints publicos del Gateway"
+    Los endpoints publicos del Gateway API (MCP + REST) estan documentados en la seccion [Gateway API](../../gateway/index.md). Esta pagina documenta los endpoints internos del Backend que consume el Frontend directamente.
+
 Tabla resumen de todos los endpoints REST del backend. Organizados por dominio.
 
 ## Documentos

@@ -141,8 +141,8 @@ def invalidate_tenant_r2_cache(*, schema_name: str):
 | `CF_R2_ENDPOINT` | URL del endpoint R2 | Requerido |
 | `CF_R2_ACCESS_KEY_ID` | Access key | Requerido |
 | `CF_R2_SECRET_ACCESS_KEY` | Secret key | Requerido |
-| `CF_R2_BUCKET_OFICIAL` | Bucket oficial (fallback) | `tenant-test-oficial` |
-| `CF_R2_BUCKET_TOSIGN` | Bucket tosign (fallback) | `tenant-test-tosign` |
+
+
 | `CF_R2_SIGN_EXPIRATION` | Expiracion URLs (segundos) | `600` |
 
 ---

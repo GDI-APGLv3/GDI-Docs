@@ -13,7 +13,7 @@ API REST principal del sistema GDI Latam. Gestiona documentos, expedientes, firm
 | Validacion | Pydantic | v2 |
 | Auth | Auth0 JWT (RS256) | - |
 | Storage | Cloudflare R2 (S3-compatible) | - |
-| Deploy | Railway | - |
+| Deploy | Docker | - |
 | Server | Gunicorn + Uvicorn | 8 workers |
 
 ## Puerto
@@ -21,7 +21,7 @@ API REST principal del sistema GDI Latam. Gestiona documentos, expedientes, firm
 | Entorno | Puerto |
 |---------|--------|
 | Local | `8000` |
-| Railway | Dinamico (variable `PORT`) |
+| Docker | Variable `PORT` (default 8080) |
 
 ## Arquitectura General
 
@@ -57,10 +57,10 @@ Cliente (Frontend/MCP)
 
 ## Integraciones Externas
 
-| Servicio | URL Interna (Railway) | Proposito |
-|----------|----------------------|-----------|
-| GDI-PDFComposer | `pdfcomposer-svc.railway.internal` | Generar PDFs (preview, final, CAEX, PV) |
-| GDI-Notary | `notary-svc.railway.internal` | Firma digital multi-firmante |
+| Servicio | URL Interna (Docker) | Proposito |
+|----------|---------------------|-----------|
+| GDI-PDFComposer | `http://pdfcomposer:8002` | Generar PDFs (preview, final, CAEX, PV) |
+| GDI-Notary | `http://notary:8001` | Firma digital multi-firmante |
 | Cloudflare R2 | S3 API | Almacenamiento de PDFs |
 | Auth0 | `tu-tenant.us.auth0.com` | Autenticacion OAuth 2.0 |
 
@@ -80,7 +80,7 @@ Cliente (Frontend/MCP)
 | `R2_ACCOUNT_ID` | Cloudflare account |
 | `R2_ACCESS_KEY_ID` | R2 access key |
 | `R2_SECRET_ACCESS_KEY` | R2 secret |
-| `R2_BUCKET_NAME` | Bucket name |
+| `R2_ENDPOINT` | Endpoint R2 S3-compatible |
 | `TESTING_MODE` | `true`/`false` - bypass Auth0 en desarrollo |
 | `PGBOUNCER_TRANSACTION_MODE` | `true`/`false` - modo transaccional PgBouncer |
 | `FRONTEND_URL` | URL del frontend (CORS) |
@@ -91,7 +91,7 @@ Cliente (Frontend/MCP)
 # Desarrollo local
 uvicorn main:app --reload --port 8000
 
-# Produccion (Railway)
+# Produccion (Docker)
 python server.py
 
 # Health check

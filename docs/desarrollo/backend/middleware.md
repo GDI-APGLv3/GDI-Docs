@@ -25,10 +25,10 @@ allowed_origins = (
     [f"http://127.0.0.1:{port}" for port in range(8000, 8051)]
 )
 
-# Agregar frontend de Railway si existe
-railway_frontend = os.getenv("FRONTEND_URL")
-if railway_frontend:
-    allowed_origins.append(railway_frontend)
+# Agregar frontend de produccion si existe
+production_frontend = os.getenv("FRONTEND_URL")
+if production_frontend:
+    allowed_origins.append(production_frontend)
 
 app.add_middleware(
     CORSMiddleware,
@@ -143,4 +143,4 @@ Si un usuario existente no tiene `auth_id` (migrado o creado manualmente) pero e
     El schema_name se valida contra una whitelist usando `is_valid_schema()` para prevenir SQL injection. Solo se permiten caracteres alfanumericos y guion bajo.
 
 !!! warning "TESTING_MODE en Produccion"
-    Si `TESTING_MODE=true` se detecta en un entorno de Railway con nombre "production" o "prod", se desactiva automaticamente por seguridad.
+    Si `TESTING_MODE=true` se detecta en un entorno de produccion, se desactiva automaticamente por seguridad.

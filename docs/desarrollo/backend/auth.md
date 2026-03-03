@@ -36,7 +36,7 @@ Si `TESTING_MODE=true` en `.env`, el backend acepta autenticacion simplificada:
 | JWT normal | `Authorization: Bearer <jwt>` | Funciona igual que produccion |
 
 !!! warning "Seguridad"
-    `TESTING_MODE` se desactiva automaticamente si se detecta entorno de produccion en Railway.
+    `TESTING_MODE` se desactiva automaticamente si se detecta entorno de produccion.
 
 ## Funciones Principales
 

@@ -10,7 +10,7 @@
 | Firma visual | ReportLab + PyPDF2 |
 | Analisis PDF | PyMuPDF (fitz) |
 | Runtime | Python 3.11, Gunicorn 21.2.0 (3 workers) |
-| Deploy | Railway (PaaS) |
+| Deploy | Docker |
 
 ## Que hace
 
